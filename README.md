@@ -1,10 +1,10 @@
 # LexiSynapseAI - Asistente de Estudio Inteligente con IA
 
 ## Integrantes
-- Mateo Molina Gonzalez - [molxeuz](https://github.com/mateo)
-- Moises Joshua Herrera Galindo - [Moshua53](https://github.com/moises)
-- Andres David Agudelo Henao - [TheNameAndresWasTaken](https://github.com/andres)
-- Samuel David Gutierrez Mejia - [samuek1](https://github.com/samuel)
+- Mateo Molina Gonzalez - [molxeuz](https://github.com/molxeuz)  
+- Moises Joshua Herrera Galindo - [Moshua53](https://github.com/Moshua53)  
+- Andres David Agudelo Henao - [TheNameAndresWasTaken](https://github.com/TheNameAndresWasTaken)  
+- Samuel David Gutierrez Mejia - [samuek1](https://github.com/samuek1)  
 
 ## 🚀 Descripción del Proyecto
 LexiSynapse es un asistente de estudio inteligente desarrollado en **Python** con **POO** y una interfaz en **Tkinter**. Su objetivo es ayudar a los estudiantes a organizar sus tareas, recibir recordatorios, obtener ayuda en la resolución de problemas y mejorar su aprendizaje con técnicas de IA.
