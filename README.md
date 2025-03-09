@@ -1,10 +1,10 @@
 # LexiSynapse
 
 ## Integrantes
-- Mateo Molina Gonzalez[molxeuz](https://github.com/mateo)
-- Moises Joshua Herrera Galindo [Moshua53](https://github.com/moises)
-- Andres David Agudelo Henao [TheNameAndresWasTaken](https://github.com/andres)
-- Samuel David Gutierrez Mejia [samuek1](https://github.com/samuel)
+- Mateo Molina Gonzalez - [molxeuz](https://github.com/mateo)
+- Moises Joshua Herrera Galindo - [Moshua53](https://github.com/moises)
+- Andres David Agudelo Henao - [TheNameAndresWasTaken](https://github.com/andres)
+- Samuel David Gutierrez Mejia - [samuek1](https://github.com/samuel)
 
 ## Introducción
 LexiSynapse es un asistente de estudio basado en inteligencia artificial, diseñado para optimizar la organización académica y mejorar la eficiencia en el aprendizaje. Desarrollado en Python con principios de Programación Orientada a Objetos (POO), cuenta con una interfaz gráfica intuitiva utilizando Tkinter y almacenamiento de datos en SQLite. Además, integra la API de DeepSeek para proporcionar asistencia avanzada en la resolución de problemas y recomendaciones de estudio personalizadas.
