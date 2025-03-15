@@ -1,155 +1,98 @@
 # LexiSynapseAI - Asistente de Estudio Inteligente con IA
 
-## Integrantes
+## 👨‍💻 Desarrolladores
 - Mateo Molina Gonzalez - [molxeuz](https://github.com/molxeuz)  
 - Moises Joshua Herrera Galindo - [Moshua53](https://github.com/Moshua53)  
 - Andres David Agudelo Henao - [TheNameAndresWasTaken](https://github.com/TheNameAndresWasTaken)  
 - Samuel David Gutierrez Mejia - [samuek1](https://github.com/samuek1)  
 
-## 🚀 Descripción del Proyecto
-LexiSynapse es un asistente de estudio inteligente desarrollado en **Python** con **POO** y una interfaz en **Tkinter**. Su objetivo es ayudar a los estudiantes a organizar sus tareas, recibir recordatorios, obtener ayuda en la resolución de problemas y mejorar su aprendizaje con técnicas de IA.
 
-## 🎯 Funcionalidades
-- **Gestión de Tareas y Recordatorios** 📅
-  - Agregar tareas con fechas de entrega, categorías y nivel de dificultad.
-  - La IA organizará las tareas por prioridad y enviará recordatorios.
-  - Visualización en un calendario interactivo.
+# 🎓 Asistente Universitario con IA
 
-- **Ayuda en la Resolución de Problemas** 🤖
-  - Conexión con la API de **DeepSeek** para búsquedas avanzadas.
-  - Generación de soluciones paso a paso en matemáticas, ciencias y lenguas.
-  - Sugerencias para redacción y gramática.
+**AsistenteUniversitario** es una aplicación de escritorio desarrollada en **Python** que busca facilitar la vida académica de los estudiantes, integrando funcionalidades como gestión de tareas, recordatorios, calendario, y un asistente inteligente basado en IA.  
 
-- **Modo de Repaso Inteligente** 🎓
-  - Creación de preguntas de práctica basadas en las tareas del usuario.
-  - Personalización de cuestionarios con machine learning.
+---
 
-- **Calendario y Notificaciones Inteligentes** 🔔
-  - Organización del estudio según los hábitos del usuario.
-  - Envío de recordatorios antes de las fechas límite.
+## 🎯 Objetivo del Proyecto
 
-- **Recomendaciones de Recursos** 📚
-  - Sugerencia de videos, libros y artículos según la tarea.
-  - Posibilidad de tomar notas y organizarlas automáticamente.
+Crear un **asistente inteligente, completo y funcional**, que ayude a los estudiantes universitarios a **gestionar su vida académica de manera efectiva, sencilla y moderna**, integrando tecnología de **IA** para dar un valor agregado que **marque la diferencia** frente a otras aplicaciones.  
 
-## 🛠️ Tecnologías Utilizadas
-- **Python (POO)**: Para la estructura del asistente.
-- **Tkinter**: Para la interfaz gráfica.
-- **SQLite**: Base de datos local para tareas y recordatorios.
-- **DeepSeek API**: Para generación de contenido y búsqueda de información.
+Será una herramienta **personalizada, útil y práctica** que cubra todas las necesidades del día a día de un universitario, facilitando su organización, planificación y productividad académica.  
 
-## 📌 Diagrama de Clases (UML)
-```plaintext
-+-------------------+
-|      Usuario      |
-+-------------------+
-| - nombre         |
-| - preferencias   |
-| - historial      |
-+-------------------+
-| + actualizarDatos() |
-+-------------------+
-         |
-         ▼
-+-------------------+
-|    Estudiante     |
-+-------------------+
-| - nivel          |
-| - materias       |
-+-------------------+
+---
 
-+-------------------+         +------------------+
-|     Tarea        |<>------> |  GestorTareas    |
-+-------------------+         +------------------+
-| - titulo        |          | + agregarTarea() |
-| - descripcion   |          | + eliminarTarea()|
-| - fecha_entrega |          | + organizar()    |
-+-------------------+         +------------------+
+## 🚀 Estructura de Carpetas
 
-+-------------------+         +----------------------+
-|   Recordatorio   |<>------> | GestorRecordatorios |
-+-------------------+         +----------------------+
-| - fecha_hora    |          | + programar()       |
-| - tarea_asociada|          | + enviar()          |
-+-------------------+         +----------------------+
+```python
+# Proyecto: AsistenteUniversitario
 
-+-------------------+         +------------------+
-|   Pregunta       |<>------> |  Cuestionario   |
-+-------------------+         +------------------+
-| - enunciado     |          | - preguntas     |
-| - opciones      |          | - usuario       |
-| - respuesta     |          | + generar()     |
-+-------------------+         +------------------+
+AsistenteUniversitario/
+│
+├── main.py
+│
+├── database/
+│   └── database.py
+│
+├── models/
+│   ├── usuario.py
+│   ├── materia.py
+│   ├── horario.py
+│   ├── tarea.py
+│   ├── recordatorio.py
+│   ├── calendario.py
+│   ├── evento.py
+│   └── ia_asistente.py
+│
+├── controllers/
+│   ├── usuario_controller.py
+│   ├── tarea_controller.py
+│   ├── recordatorio_controller.py
+│   ├── calendario_controller.py
+│   └── ia_controller.py
+│
+├── interfaces/
+│   ├── login_interface.py
+│   ├── register_interface.py
+│   ├── dashboard_interface.py
+│   ├── tareas_interface.py
+│   ├── recordatorios_interface.py
+│   ├── calendario_interface.py
+│   ├── ia_interface.py
+│   └── perfil_interface.py
+│
+├── assets/
+│   └── (logos, iconos)
+│
+└── config/
+    └── config.py
 ```
+---
 
-## 📌 Diagrama de Casos de Uso
-```plaintext
-        +---------------------+
-        |     Usuario         |
-        +---------------------+
-                |
-        ------------------
-        |                |
-+----------------+  +-------------------+
-| Gestionar     |  | Consultar IA       |
-| Tareas       |  | y Recursos         |
-+----------------+  +-------------------+
-        |                |
-+----------------+  +-------------------+
-| Agregar Tarea |  | Resolver Problema |
-| Ver Tareas    |  | Sugerencias       |
-+----------------+  +-------------------+
-```
+## ✅ Funcionalidades Principales
 
-## 📂 Estructura del Proyecto
-```plaintext
-lexi_synapse/
-│── main.py                  # Archivo principal
-│── config.py                # Configuración general
-│
-├── gui/                     # Interfaz gráfica con Tkinter
-│   ├── app.py               # Ventana principal
-│   ├── calendario.py        # Vista del calendario
-│   ├── tareas.py            # Pantalla de gestión de tareas
-│   ├── recordatorios.py     # Manejo de recordatorios
-│
-├── models/                  # Clases principales (POO)
-│   ├── usuario.py           # Clase Usuario y Estudiante
-│   ├── tarea.py             # Clase Tarea
-│   ├── recordatorio.py      # Clase Recordatorio
-│   ├── cuestionario.py      # Cuestionarios y preguntas
-│   ├── recurso.py           # Recomendaciones de estudio
-│
-├── controllers/             # Lógica y comunicación entre módulos
-│   ├── gestor_tareas.py     # Manejo de tareas
-│   ├── gestor_recordatorios.py  # Notificaciones
-│   ├── gestor_consultas.py  # Integración con DeepSeek API
-│   ├── gestor_recursos.py   # Sugerencias de recursos
-│
-├── database/                # Base de datos SQLite
-│   ├── db.py                # Conexión con SQLite
-│   ├── models.sql           # Definición de tablas
-│
-└── assets/                  # Archivos estáticos
-    ├── icons/               # Iconos para la GUI
-    ├── styles/              # Estilos visuales
-```
+- **🔑 Registro e inicio de sesión** de usuarios.
+- **📝 Gestión de tareas académicas**, con fechas límite y estados.
+- **⏰ Recordatorios** personalizados para eventos importantes.
+- **📅 Calendario académico** con integración de tareas, eventos y recordatorios.
+- **🤖 Asistente inteligente IA** para resolver dudas y dar recomendaciones.
+- **👤 Gestión de perfil** de usuario (información y ajustes personales).
 
-## 🌍 Fases del Desarrollo
-### 📌 Primera Fase
-✅ Definir estructura y base de datos.  
-✅ Implementar gestión de tareas y recordatorios.  
-✅ Crear interfaz básica en Tkinter.  
+---
 
-### 📌 Segunda Fase
-🔄 Integración con DeepSeek API.  
-🔄 Implementar IA para personalización del estudio.  
-🔄 Mejorar la experiencia del usuario en la interfaz gráfica.  
+## 🛠 Tecnologías Utilizadas
 
-## 🎯 Próximos Pasos
-📌 **Implementación en la Nube** (API Backend).  
-📌 **Desarrollo de una Interfaz Completa** con mejor diseño y accesibilidad.  
+- **Python 3.x**
+- **Flet** (Interfaz gráfica)
+- **SQLite (no definido)** (Base de datos en nube)
+- Arquitectura: **MVC (Modelo - Vista - Controlador)**
+- Integración: **IA (API externa o modelo personalizado DeepSeek)**
 
-🚀 **¡Contribuye al proyecto en GitHub!** 💻
+---
 
+## 🤝 Contribuciones
 
+¡Las contribuciones son bienvenidas! Si deseas colaborar, realiza un **fork** del proyecto, trabaja en una rama y envía un **Pull Request**.  
+
+> ⚠️ **Nota:** Por favor, sigue las buenas prácticas de desarrollo y mantén la estructura MVC.
+
+---
