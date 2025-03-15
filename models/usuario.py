@@ -1,3 +1,4 @@
+
 class Usuario:
     #Atributos
     def __init__(self,nombre: str):
@@ -9,4 +10,6 @@ class Usuario:
     def mostrar_usuario(self):
         return f"{self.nombre}-{self.preferencias}-{self.historial}"
 
-
+"""
+Registro, autenticación, edición.
+"""
