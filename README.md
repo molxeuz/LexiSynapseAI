@@ -26,7 +26,7 @@ Será una herramienta **personalizada, útil y práctica** que cubra todas las n
 ```python
 # Proyecto: AsistenteUniversitario
 
-AsistenteUniversitario/
+LexiSynapseAI/
 │
 ├── main.py
 │
