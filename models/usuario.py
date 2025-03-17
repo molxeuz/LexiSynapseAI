@@ -1,14 +1,15 @@
 
 class Usuario:
-    #Atributos
-    def __init__(self,nombre: str):
-        self.nombre: str= nombre
-        self.preferencias: list[str]=[]
-        self.historial: list[str]=[]
+    def __init__(self, nombre: str, correo: str, fecha_nacimiento: str, contraseña: str):
+        self.nombre = nombre
+        self.correo = correo
+        self.fecha_nacimiento = fecha_nacimiento
+        self.contraseña = contraseña
+        self.preferencias = []
+        self.historial = []
 
-    #Metodos
     def mostrar_usuario(self):
-        return f"{self.nombre}-{self.preferencias}-{self.historial}"
+        return f"{self.nombre} - {self.correo} - {self.fecha_nacimiento}"
 
 """
 Registro, autenticación, edición.
