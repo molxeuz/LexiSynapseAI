@@ -1,10 +1,9 @@
 
 import flet as ft
-from controllers.usuario_controller import registrar_usuario, registrar_academico
+from controllers.usuario_controller import Usuario, Academico
 
 def academico_view(page):
     params = page.route.split("?")
-    usuario_id = None
     usuario_data = {}
 
     if len(params) > 1:
@@ -43,8 +42,13 @@ def academico_view(page):
             hora_inicio = materia["hora_inicio"].value.strip()
             hora_fin = materia["hora_fin"].value.strip()
 
-            if nombre and hora_inicio and hora_fin:
-                materias.append({"nombre": nombre, "hora_inicio": hora_inicio, "hora_fin": hora_fin})
+            if not nombre or not hora_inicio or not hora_fin:
+                resultado_text.value = "Todos los campos de cada materia son obligatorios."
+                resultado_text.color = "red"
+                page.update()
+                return
+
+            materias.append({"nombre": nombre, "hora_inicio": hora_inicio, "hora_fin": hora_fin})
 
         if not universidad or not materias:
             resultado_text.value = "Debe ingresar la universidad y al menos una materia con horarios."
@@ -52,27 +56,31 @@ def academico_view(page):
             page.update()
             return
 
-        # Primero registramos al usuario
-        mensaje, exito, usuario_id = registrar_usuario(
-            usuario_data.get("nombre"),
-            usuario_data.get("correo"),
-            usuario_data.get("fecha_nacimiento"),
-            usuario_data.get("contraseña")
-        )
+        nombre = usuario_data.get("nombre", "").strip()
+        correo = usuario_data.get("correo", "").strip()
+        fecha_nacimiento = usuario_data.get("fecha_nacimiento", "").strip()
+        contraseña = usuario_data.get("contraseña", "").strip()
 
-        if not exito:
-            resultado_text.value = mensaje
+        if not nombre or not correo or not fecha_nacimiento or not contraseña:
+            resultado_text.value = "Error: Datos de usuario incompletos."
             resultado_text.color = "red"
             page.update()
             return
 
-        # Luego registramos el académico
-        mensaje, exito = registrar_academico(usuario_id, universidad, materias)
+        mensaje_usuario, exito_usuario, usuario_id = Usuario.registrar(nombre, correo, fecha_nacimiento, contraseña)
 
-        resultado_text.value = mensaje
-        resultado_text.color = "green" if exito else "red"
+        if not exito_usuario:
+            resultado_text.value = mensaje_usuario
+            resultado_text.color = "red"
+            page.update()
+            return
 
-        if exito:
+        mensaje_academico, exito_academico = Academico.registrar(usuario_id, universidad, materias)
+
+        resultado_text.value = mensaje_academico
+        resultado_text.color = "green" if exito_academico else "red"
+
+        if exito_academico:
             page.go("/login")
 
         page.update()
@@ -90,3 +98,10 @@ def academico_view(page):
         vertical_alignment=ft.MainAxisAlignment.CENTER,
         horizontal_alignment=ft.CrossAxisAlignment.CENTER
     )
+
+"""
+Formulario universidad, materias, horarios.
+Validaciones.
+Guardar con materia.py, horario.py.
+Redirigir al login o dashboard.
+"""

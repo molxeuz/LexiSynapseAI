@@ -1,6 +1,6 @@
 
 import flet as ft
-from controllers.usuario_controller import login_usuario
+from controllers.usuario_controller import Usuario
 
 def login_view(page: ft.Page):
     correo_input = ft.TextField(label="Correo")
@@ -8,7 +8,7 @@ def login_view(page: ft.Page):
     resultado_text = ft.Text()
 
     def login(e):
-        msg, success = login_usuario(correo_input.value, contraseña_input.value)
+        msg, success = Usuario.login(correo_input.value, contraseña_input.value)
         resultado_text.value = msg
         resultado_text.color = "green" if success else "red"
         page.update()
@@ -18,7 +18,7 @@ def login_view(page: ft.Page):
 
     return ft.View(
         "/login",
-        [
+        controls=[
             ft.Text("Iniciar Sesión", size=30, weight="bold"),
             correo_input,
             contraseña_input,
@@ -29,7 +29,6 @@ def login_view(page: ft.Page):
         vertical_alignment=ft.MainAxisAlignment.CENTER,
         horizontal_alignment=ft.CrossAxisAlignment.CENTER
     )
-
 
 """
 Formulario correo, contraseña.
