@@ -15,16 +15,15 @@ def registro_view(page: ft.Page):
         fecha_nacimiento = fecha_nacimiento_input.value.strip()
         contraseña = contraseña_input.value.strip()
 
-        mensaje, exito, usuario_id = registrar_usuario(nombre, correo, fecha_nacimiento, contraseña)
+        if not nombre or not correo or not fecha_nacimiento or not contraseña:
+            resultado_text.value = "Todos los campos son obligatorios."
+            resultado_text.color = "red"
+            page.update()
+            return
 
-        resultado_text.value = mensaje
-        resultado_text.color = "green" if exito else "red"
-        page.update()
-
-        if exito:
-            # ✅ Aquí haces la redirección con el usuario_id recibido:
-            page.go(f"/academico?usuario_id={usuario_id}")
-
+        # Pasamos los datos a la vista de registro académico sin registrar aún
+        page.go(
+            f"/academico?nombre={nombre}&correo={correo}&fecha_nacimiento={fecha_nacimiento}&contraseña={contraseña}")
     return ft.View(
         "/register",
         [

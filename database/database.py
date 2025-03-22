@@ -1,12 +1,10 @@
 
-# database.py
 import sqlite3
 
-# Conectar a la base de datos (se creará si no existe)
 conn = sqlite3.connect('app_database.db', check_same_thread=False)
 cursor = conn.cursor()
 
-# Crear tabla de usuarios
+# Tabla de usuarios
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS usuarios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -17,19 +15,19 @@ cursor.execute('''
     )
 ''')
 
-# Tabla para registro académico (si deseas manejarlo desde base)
+# Crear la tabla academicos SIN la columna 'materias'
 cursor.execute('''
-    CREATE TABLE IF NOT EXISTS academicos (
+    CREATE TABLE academicos_materias (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         usuario_id INTEGER NOT NULL,
         universidad TEXT NOT NULL,
-        materias TEXT NOT NULL,
-        horarios TEXT NOT NULL,
+        materia TEXT NOT NULL,
+        hora_inicio TEXT NOT NULL,
+        hora_fin TEXT NOT NULL,
         FOREIGN KEY (usuario_id) REFERENCES usuarios (id)
     )
 ''')
 
-# Confirmar cambios
 conn.commit()
 
 """

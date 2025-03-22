@@ -16,7 +16,7 @@ def main(page: ft.Page):
 
         if route == "/registro":
             page.views.append(registro_view(page))
-        elif route.startswith("/academico"):  # ✅ Detectar ruta con parámetros
+        elif route.startswith("/academico"):
             page.views.append(academico_view(page))
         elif route == "/login":
             page.views.append(login_view(page))
