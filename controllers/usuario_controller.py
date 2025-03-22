@@ -15,29 +15,38 @@ def registrar_usuario(nombre, correo, fecha_nacimiento, contraseña):
             (nombre, correo, fecha_nacimiento, contraseña)
         )
         conn.commit()
-        usuario_id = cursor.lastrowid  # 👈 obtener el ID recién creado
+        usuario_id = cursor.lastrowid
         return "Registro exitoso.", True, usuario_id
     except Exception as e:
         return f"Error al registrar: {e}", False, None
 
-def registrar_academico(usuario_id, universidad, materias, horarios):
-    if not usuario_id or not universidad or not materias or not horarios:
+def registrar_academico(usuario_id, universidad, materias):
+    if not usuario_id or not universidad or not materias:
         return "Todos los campos son obligatorios.", False
 
-    # Verificar si el usuario existe
     cursor.execute("SELECT * FROM usuarios WHERE id = ?", (usuario_id,))
     if not cursor.fetchone():
         return "Usuario no encontrado.", False
 
     try:
-        cursor.execute(
-            "INSERT INTO academicos (usuario_id, universidad, materias, horarios) VALUES (?, ?, ?, ?)",
-            (usuario_id, universidad, materias, horarios)
-        )
+        for materia in materias:
+            nombre = materia.get("nombre", "").strip()
+            hora_inicio = materia.get("hora_inicio", "").strip()
+            hora_fin = materia.get("hora_fin", "").strip()
+
+            if not nombre or not hora_inicio or not hora_fin:
+                return f"Todos los campos de la materia '{nombre}' son obligatorios.", False
+
+            cursor.execute(
+                "INSERT INTO academicos_materias (usuario_id, universidad, materia, hora_inicio, hora_fin) VALUES (?, ?, ?, ?, ?)",
+                (usuario_id, universidad, nombre, hora_inicio, hora_fin)
+            )
+
         conn.commit()
         return "Registro académico exitoso.", True
+
     except Exception as e:
-        print("Error al registrar datos académicos:", e)  # Log de error detallado
+        print("Error al registrar datos académicos:", e)
         return f"Error al registrar datos académicos: {e}", False
 
 def login_usuario(correo, contraseña):
