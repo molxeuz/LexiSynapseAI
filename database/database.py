@@ -17,7 +17,7 @@ cursor.execute('''
 
 # Crear la tabla academicos SIN la columna 'materias'
 cursor.execute('''
-    CREATE TABLE academicos_materias (
+    CREATE TABLE IF NOT EXISTS academicos_materias (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         usuario_id INTEGER NOT NULL,
         universidad TEXT NOT NULL,

@@ -13,6 +13,9 @@ def login_view(page: ft.Page):
         resultado_text.color = "green" if success else "red"
         page.update()
 
+        if success:
+            page.go("/dashboard")
+
     return ft.View(
         "/login",
         [
@@ -26,6 +29,7 @@ def login_view(page: ft.Page):
         vertical_alignment=ft.MainAxisAlignment.CENTER,
         horizontal_alignment=ft.CrossAxisAlignment.CENTER
     )
+
 
 """
 Formulario correo, contraseña.
