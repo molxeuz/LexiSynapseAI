@@ -3,6 +3,7 @@ import flet as ft
 from interfaces.register_user_interface import registro_view
 from interfaces.register_acad_interface import academico_view
 from interfaces.login_interface import login_view
+from interfaces.dashboard_interface import dashboard_view  # Importamos la vista del dashboard
 
 def main(page: ft.Page):
     page.title = "Sistema de Registro"
@@ -20,6 +21,8 @@ def main(page: ft.Page):
             page.views.append(academico_view(page))
         elif route == "/login":
             page.views.append(login_view(page))
+        elif route == "/dashboard":
+            page.views.append(dashboard_view(page))
         else:
             page.views.append(login_view(page))
         page.update()
