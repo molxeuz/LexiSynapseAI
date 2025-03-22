@@ -1,3 +1,4 @@
+
 import flet as ft
 
 def dashboard_view(page: ft.Page):
@@ -52,12 +53,10 @@ def dashboard_view(page: ft.Page):
     return ft.View("/dashboard", [interface])
 
 def main(page: ft.Page):
-    # Configurar página
     page.title = "LexiSynapseAI"
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
 
-    # Función para crear items de tarea
     def create_task_item(task_name, due_date):
         return ft.Row(
             controls=[
@@ -68,7 +67,6 @@ def main(page: ft.Page):
             spacing=15
         )
 
-    # Función para crear botones de acción
     def create_action_button(icon, text):
         return ft.Column(
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
@@ -79,7 +77,6 @@ def main(page: ft.Page):
             spacing=5
         )
 
-    # Construir interfaz
     interface = ft.Container(
         padding=20,
         content=ft.Column(
@@ -104,10 +101,8 @@ def main(page: ft.Page):
         )
     )
 
-    # Añadir interfaz a la página
     page.add(interface)
 
-ft.app(target=main)
 """
 Mostrar datos usuario, tareas, recordatorios.
 Conectar con tarea_controller.py, recordatorio_controller.py.

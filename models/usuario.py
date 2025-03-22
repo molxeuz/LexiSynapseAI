@@ -1,15 +1,11 @@
 
-class Usuario:
-    def __init__(self, nombre: str, correo: str, fecha_nacimiento: str, contraseña: str):
-        self.nombre = nombre
-        self.correo = correo
-        self.fecha_nacimiento = fecha_nacimiento
-        self.contraseña = contraseña
-        self.preferencias = []
-        self.historial = []
+"""
+Posible eliminacion de archivo y carpeta, se unifico en usuario_controller - para estructura poo
+"""
 
-    def mostrar_usuario(self):
-        return f"{self.nombre} - {self.correo} - {self.fecha_nacimiento}"
+"""
+Hey Capitan moises, como la vio pues
+"""
 
 """
 Registro, autenticación, edición.

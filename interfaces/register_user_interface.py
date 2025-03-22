@@ -1,6 +1,5 @@
 
 import flet as ft
-from controllers.usuario_controller import registrar_usuario
 
 def registro_view(page: ft.Page):
     nombre_input = ft.TextField(label="Nombre")
@@ -9,7 +8,7 @@ def registro_view(page: ft.Page):
     contraseña_input = ft.TextField(label="Contraseña", password=True, can_reveal_password=True)
     resultado_text = ft.Text()
 
-    def guardar_usuario(e):
+    def ir_a_academico(e):
         nombre = nombre_input.value.strip()
         correo = correo_input.value.strip()
         fecha_nacimiento = fecha_nacimiento_input.value.strip()
@@ -21,18 +20,17 @@ def registro_view(page: ft.Page):
             page.update()
             return
 
-        # Pasamos los datos a la vista de registro académico sin registrar aún
-        page.go(
-            f"/academico?nombre={nombre}&correo={correo}&fecha_nacimiento={fecha_nacimiento}&contraseña={contraseña}")
+        page.go(f"/academico?nombre={nombre}&correo={correo}&fecha_nacimiento={fecha_nacimiento}&contraseña={contraseña}")
+
     return ft.View(
         "/register",
-        [
+        controls=[
             ft.Text("Registro de Usuario", size=30, weight="bold"),
             nombre_input,
             correo_input,
             fecha_nacimiento_input,
             contraseña_input,
-            ft.ElevatedButton("Registrar", on_click=guardar_usuario),
+            ft.ElevatedButton("Siguiente", on_click=ir_a_academico),
             resultado_text
         ],
         vertical_alignment=ft.MainAxisAlignment.CENTER,
