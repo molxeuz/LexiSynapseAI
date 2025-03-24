@@ -32,16 +32,7 @@ LexiSynapseAI/
 │
 ├── database/
 │   └── database.py
-│
-├── models/
-│   ├── usuario.py
-│   ├── materia.py
-│   ├── horario.py
-│   ├── tarea.py
-│   ├── recordatorio.py
-│   ├── calendario.py
-│   ├── evento.py
-│   └── ia_asistente.py
+│   └── controllers.py
 │
 ├── controllers/
 │   ├── usuario_controller.py
@@ -52,7 +43,8 @@ LexiSynapseAI/
 │
 ├── interfaces/
 │   ├── login_interface.py
-│   ├── register_interface.py
+│   ├── register_user_usuario.py
+│   ├── register_acad_interface.py
 │   ├── dashboard_interface.py
 │   ├── tareas_interface.py
 │   ├── recordatorios_interface.py
@@ -62,6 +54,11 @@ LexiSynapseAI/
 │
 ├── assets/
 │   └── (logos, iconos)
+│
+├── mdViews/
+│   ├── MOCKUPS.md
+│   ├── SECURITY.md
+│   └── README.md
 │
 └── config/
     └── config.py
