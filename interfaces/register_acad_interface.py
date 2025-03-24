@@ -3,100 +3,184 @@ import flet as ft
 from controllers.usuario_controller import Usuario, Academico
 
 def academico_view(page):
-    params = page.route.split("?")
+    # Capturar los datos del usuario desde la URL
+    parametros = page.route.split("?")
     usuario_data = {}
 
-    if len(params) > 1:
-        query = params[1]
-        for p in query.split("&"):
-            key, value = p.split("=")
-            usuario_data[key] = value
+    if len(parametros) > 1:
+        params = dict(p.split("=") for p in parametros[1].split("&"))
+        usuario_data["nombre"] = params.get("nombre", "").replace("%20", " ")
+        usuario_data["correo"] = params.get("correo", "")
+        usuario_data["fecha_nacimiento"] = params.get("fecha_nacimiento", "")
+        usuario_data["contraseña"] = params.get("contraseña", "")
 
     universidad_input = ft.TextField(label="Universidad")
+    carrera_input = ft.TextField(label="Carrera")
+    semestre_input = ft.TextField(label="Semestre")
+
     resultado_text = ft.Text()
     materias_inputs = []
+    actividades_inputs = []
     materias_container = ft.Column()
+    actividades_container = ft.Column()
+
+    dias_semana = [
+        ft.dropdown.Option("Lunes"),
+        ft.dropdown.Option("Martes"),
+        ft.dropdown.Option("Miércoles"),
+        ft.dropdown.Option("Jueves"),
+        ft.dropdown.Option("Viernes"),
+        ft.dropdown.Option("Sábado")
+    ]
 
     def agregar_materia(e):
-        if len(materias_inputs) >= 10:
-            resultado_text.value = "No puedes agregar más de 10 materias."
-            resultado_text.color = "red"
-            page.update()
-            return
-
         nombre_materia = ft.TextField(label="Nombre de la materia")
+        dia_materia = ft.Dropdown(label="Día de la semana", options=dias_semana)
         hora_inicio = ft.TextField(label="Hora de inicio (HH:MM)")
         hora_fin = ft.TextField(label="Hora de fin (HH:MM)")
 
-        materias_inputs.append({"nombre": nombre_materia, "hora_inicio": hora_inicio, "hora_fin": hora_fin})
-        materias_container.controls.append(ft.Row([nombre_materia, hora_inicio, hora_fin]))
+        materia_card = ft.Container(
+            content=ft.Column([
+                ft.Text(f"Materia {len(materias_inputs) + 1}", weight="bold"),
+                nombre_materia,
+                dia_materia,
+                hora_inicio,
+                hora_fin,
+                ft.ElevatedButton("Eliminar", on_click=lambda e: eliminar_materia(materia_card))
+            ])
+        )
 
+        materias_inputs.append(materia_card)
+        materias_container.controls.append(materia_card)
+        page.update()
+
+    def eliminar_materia(card):
+        materias_inputs.remove(card)
+        materias_container.controls.remove(card)
+        page.update()
+
+    def agregar_actividad(e):
+        nombre_actividad = ft.TextField(label="Nombre de la actividad")
+        dia_actividad = ft.Dropdown(label="Día de la semana", options=dias_semana)
+        hora_inicio = ft.TextField(label="Hora de inicio (HH:MM)")
+        hora_fin = ft.TextField(label="Hora de fin (HH:MM)")
+
+        actividad_card = ft.Container(
+            content=ft.Column([
+                ft.Text(f"Actividad {len(actividades_inputs) + 1}", weight="bold"),
+                nombre_actividad,
+                dia_actividad,
+                hora_inicio,
+                hora_fin,
+                ft.ElevatedButton("Eliminar", on_click=lambda e: eliminar_actividad(actividad_card))
+            ])
+        )
+
+        actividades_inputs.append(actividad_card)
+        actividades_container.controls.append(actividad_card)
+        page.update()
+
+    def eliminar_actividad(card):
+        actividades_inputs.remove(card)
+        actividades_container.controls.remove(card)
         page.update()
 
     def guardar_academico(e):
         universidad = universidad_input.value.strip()
-        materias = []
+        carrera = carrera_input.value.strip()
+        semestre = semestre_input.value.strip()
 
-        for materia in materias_inputs:
-            nombre = materia["nombre"].value.strip()
-            hora_inicio = materia["hora_inicio"].value.strip()
-            hora_fin = materia["hora_fin"].value.strip()
-
-            if not nombre or not hora_inicio or not hora_fin:
-                resultado_text.value = "Todos los campos de cada materia son obligatorios."
-                resultado_text.color = "red"
-                page.update()
-                return
-
-            materias.append({"nombre": nombre, "hora_inicio": hora_inicio, "hora_fin": hora_fin})
-
-        if not universidad or not materias:
-            resultado_text.value = "Debe ingresar la universidad y al menos una materia con horarios."
+        if not universidad or not carrera or not semestre:
+            resultado_text.value = "Debe ingresar la universidad, la carrera y el semestre."
             resultado_text.color = "red"
             page.update()
             return
 
-        nombre = usuario_data.get("nombre", "").strip()
-        correo = usuario_data.get("correo", "").strip()
-        fecha_nacimiento = usuario_data.get("fecha_nacimiento", "").strip()
-        contraseña = usuario_data.get("contraseña", "").strip()
-
-        if not nombre or not correo or not fecha_nacimiento or not contraseña:
-            resultado_text.value = "Error: Datos de usuario incompletos."
+        if not materias_inputs:
+            resultado_text.value = "Debe ingresar al menos una materia."
             resultado_text.color = "red"
             page.update()
             return
 
-        mensaje_usuario, exito_usuario, usuario_id = Usuario.registrar(nombre, correo, fecha_nacimiento, contraseña)
-
-        if not exito_usuario:
-            resultado_text.value = mensaje_usuario
+        if not actividades_inputs:
+            resultado_text.value = "Debe ingresar al menos una actividad."
             resultado_text.color = "red"
             page.update()
             return
 
-        mensaje_academico, exito_academico = Academico.registrar(usuario_id, universidad, materias)
+        # Registrar usuario con los datos obtenidos de la URL
+        mensaje, exito, usuario_id = Usuario.registrar(
+            usuario_data["nombre"],
+            usuario_data["correo"],
+            usuario_data["fecha_nacimiento"],
+            usuario_data["contraseña"]
+        )
 
-        resultado_text.value = mensaje_academico
-        resultado_text.color = "green" if exito_academico else "red"
+        if not exito:
+            resultado_text.value = mensaje
+            resultado_text.color = "red"
+            page.update()
+            return
 
-        if exito_academico:
-            page.go("/login")
+        # Obtener materias y actividades
+        materias = [
+            {
+                "nombre": card.content.controls[1].value,
+                "dia": card.content.controls[2].value,
+                "hora_inicio": card.content.controls[3].value,
+                "hora_fin": card.content.controls[4].value
+            }
+            for card in materias_inputs
+        ]
 
+        actividades = [
+            {
+                "nombre": card.content.controls[1].value,
+                "dia": card.content.controls[2].value,
+                "hora_inicio": card.content.controls[3].value,
+                "hora_fin": card.content.controls[4].value
+            }
+            for card in actividades_inputs
+        ]
+
+        # Registrar datos académicos con el usuario correcto
+        mensaje, exito = Academico.registrar(usuario_id, universidad, carrera, semestre, materias, actividades)
+
+        resultado_text.value = mensaje
+        resultado_text.color = "green" if exito else "red"
         page.update()
 
     return ft.View(
         "/academico",
-        [
-            ft.Text("Registro Académico", size=30, weight="bold"),
-            universidad_input,
-            ft.ElevatedButton("Agregar Materia", on_click=agregar_materia),
-            materias_container,
-            ft.ElevatedButton("Guardar", on_click=guardar_academico),
-            resultado_text
-        ],
-        vertical_alignment=ft.MainAxisAlignment.CENTER,
-        horizontal_alignment=ft.CrossAxisAlignment.CENTER
+        controls=[
+            ft.Container(
+                expand=True,
+                content=ft.Column(
+                    controls=[
+                        ft.Text("Registro Académico", size=30, weight="bold"),
+                        universidad_input,
+                        carrera_input,
+                        semestre_input,
+                        ft.Row([
+                            ft.Column([
+                                ft.Text("Materias", size=20, weight="bold"),
+                                ft.ElevatedButton("Agregar Materia", on_click=agregar_materia),
+                                materias_container
+                            ]),
+                            ft.VerticalDivider(),
+                            ft.Column([
+                                ft.Text("Actividades Extracurriculares", size=20, weight="bold"),
+                                ft.ElevatedButton("Agregar Actividad", on_click=agregar_actividad),
+                                actividades_container
+                            ])
+                        ]),
+                        ft.ElevatedButton("Guardar", on_click=guardar_academico),
+                        resultado_text
+                    ],
+                    scroll=ft.ScrollMode.ALWAYS  # HABILITA EL SCROLL
+                )
+            )
+        ]
     )
 
 """

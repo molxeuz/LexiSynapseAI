@@ -1,4 +1,0 @@
-
-"""
-CRUD de recordatorios.
-"""

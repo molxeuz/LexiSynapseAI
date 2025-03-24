@@ -1,4 +1,0 @@
-
-"""
-Lógica de calendario.
-"""
