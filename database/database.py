@@ -15,16 +15,32 @@ cursor.execute('''
     )
 ''')
 
-# Crear la tabla academicos SIN la columna 'materias'
+# Tabla de materias académicas
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS academicos_materias (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         usuario_id INTEGER NOT NULL,
         universidad TEXT NOT NULL,
+        carrera TEXT NOT NULL,
+        semestre TEXT NOT NULL,
         materia TEXT NOT NULL,
+        dia TEXT NOT NULL,
         hora_inicio TEXT NOT NULL,
         hora_fin TEXT NOT NULL,
-        FOREIGN KEY (usuario_id) REFERENCES usuarios (id)
+        FOREIGN KEY (usuario_id) REFERENCES usuarios (id) ON DELETE CASCADE
+    )
+''')
+
+# Tabla de actividades extracurriculares
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS academicos_actividades (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        usuario_id INTEGER NOT NULL,
+        nombre TEXT NOT NULL,
+        dia TEXT NOT NULL,
+        hora_inicio TEXT NOT NULL,
+        hora_fin TEXT NOT NULL,
+        FOREIGN KEY (usuario_id) REFERENCES usuarios (id) ON DELETE CASCADE
     )
 ''')
 

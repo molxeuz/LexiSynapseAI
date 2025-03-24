@@ -1,4 +1,0 @@
-
-"""
-Crear, editar, eliminar materias.
-"""

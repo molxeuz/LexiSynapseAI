@@ -1,3 +1,0 @@
-"""
-Conexión con API IA.
-"""
