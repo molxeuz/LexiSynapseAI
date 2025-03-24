@@ -7,5 +7,3 @@ Conectar clases (models) con pantallas (interfaces).
 Validaciones y respuestas dinámicas.
 
 """
-
-Test de push
