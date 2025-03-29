@@ -1,6 +1,5 @@
 import datetime
 
-
 class Tarea:
     def __int__(self, descripcion, fecha_limite, completada=False):
         self.descripcion = descripcion
