@@ -1,9 +1,8 @@
 
 import flet as ft
-from controllers.usuario_controller import Usuario, Academico
+from controllers.usuario_controller import Usuario
 
 def academico_view(page):
-    # Capturar los datos del usuario desde la URL
     parametros = page.route.split("?")
     usuario_data = {}
 
@@ -13,10 +12,9 @@ def academico_view(page):
         usuario_data["correo"] = params.get("correo", "")
         usuario_data["fecha_nacimiento"] = params.get("fecha_nacimiento", "")
         usuario_data["contraseña"] = params.get("contraseña", "")
-
-    universidad_input = ft.TextField(label="Universidad")
-    carrera_input = ft.TextField(label="Carrera")
-    semestre_input = ft.TextField(label="Semestre")
+        usuario_data["universidad"] = params.get("universidad", "")
+        usuario_data["carrera"] = params.get("carrera", "")
+        usuario_data["semestre"] = params.get("semestre", "")
 
     resultado_text = ft.Text()
     materias_inputs = []
@@ -86,34 +84,35 @@ def academico_view(page):
         page.update()
 
     def guardar_academico(e):
-        universidad = universidad_input.value.strip()
-        carrera = carrera_input.value.strip()
-        semestre = semestre_input.value.strip()
+        materias = [
+            {
+                "nombre": card.content.controls[1].value.strip(),
+                "dia": card.content.controls[2].value,
+                "hora_inicio": card.content.controls[3].value.strip(),
+                "hora_fin": card.content.controls[4].value.strip()
+            }
+            for card in materias_inputs if card.content.controls[1].value.strip()  # Evita valores vacíos
+        ]
 
-        if not universidad or not carrera or not semestre:
-            resultado_text.value = "Debe ingresar la universidad, la carrera y el semestre."
-            resultado_text.color = "red"
-            page.update()
-            return
+        actividades = [
+            {
+                "nombre": card.content.controls[1].value.strip(),
+                "dia": card.content.controls[2].value,
+                "hora_inicio": card.content.controls[3].value.strip(),
+                "hora_fin": card.content.controls[4].value.strip()
+            }
+            for card in actividades_inputs if card.content.controls[1].value.strip()  # Evita valores vacíos
+        ]
 
-        if not materias_inputs:
-            resultado_text.value = "Debe ingresar al menos una materia."
-            resultado_text.color = "red"
-            page.update()
-            return
-
-        if not actividades_inputs:
-            resultado_text.value = "Debe ingresar al menos una actividad."
-            resultado_text.color = "red"
-            page.update()
-            return
-
-        # Registrar usuario con los datos obtenidos de la URL
+        # Registrar usuario
         mensaje, exito, usuario_id = Usuario.registrar(
             usuario_data["nombre"],
             usuario_data["correo"],
             usuario_data["fecha_nacimiento"],
-            usuario_data["contraseña"]
+            usuario_data["contraseña"],
+            usuario_data["universidad"],
+            usuario_data["carrera"],
+            usuario_data["semestre"]
         )
 
         if not exito:
@@ -122,32 +121,17 @@ def academico_view(page):
             page.update()
             return
 
-        # Obtener materias y actividades
-        materias = [
-            {
-                "nombre": card.content.controls[1].value,
-                "dia": card.content.controls[2].value,
-                "hora_inicio": card.content.controls[3].value,
-                "hora_fin": card.content.controls[4].value
-            }
-            for card in materias_inputs
-        ]
+        # Registrar materias y actividades solo si hay usuario_id válido
+        mensaje_academico, exito_academico = Usuario.registrar_datos_academicos(usuario_id, materias, actividades)
 
-        actividades = [
-            {
-                "nombre": card.content.controls[1].value,
-                "dia": card.content.controls[2].value,
-                "hora_inicio": card.content.controls[3].value,
-                "hora_fin": card.content.controls[4].value
-            }
-            for card in actividades_inputs
-        ]
+        if not exito_academico:
+            resultado_text.value = mensaje_academico
+            resultado_text.color = "red"
+        else:
+            resultado_text.value = "Registro académico exitoso. Redirigiendo..."
+            resultado_text.color = "green"
+            page.go("/login")  # Redirigir al login
 
-        # Registrar datos académicos con el usuario correcto
-        mensaje, exito = Academico.registrar(usuario_id, universidad, carrera, semestre, materias, actividades)
-
-        resultado_text.value = mensaje
-        resultado_text.color = "green" if exito else "red"
         page.update()
 
     return ft.View(
@@ -158,9 +142,6 @@ def academico_view(page):
                 content=ft.Column(
                     controls=[
                         ft.Text("Registro Académico", size=30, weight="bold"),
-                        universidad_input,
-                        carrera_input,
-                        semestre_input,
                         ft.Row([
                             ft.Column([
                                 ft.Text("Materias", size=20, weight="bold"),
@@ -177,7 +158,7 @@ def academico_view(page):
                         ft.ElevatedButton("Guardar", on_click=guardar_academico),
                         resultado_text
                     ],
-                    scroll=ft.ScrollMode.ALWAYS  # HABILITA EL SCROLL
+                    scroll=ft.ScrollMode.ALWAYS
                 )
             )
         ]
