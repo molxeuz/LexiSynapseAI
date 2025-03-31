@@ -4,25 +4,23 @@ import sqlite3
 conn = sqlite3.connect('app_database.db', check_same_thread=False)
 cursor = conn.cursor()
 
-# Tabla de usuarios
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS usuarios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nombre TEXT NOT NULL,
         correo TEXT UNIQUE NOT NULL,
         fecha_nacimiento TEXT NOT NULL,
-        contraseña TEXT NOT NULL
+        contraseña TEXT NOT NULL,
+        universidad TEXT NOT NULL,
+        carrera TEXT NOT NULL,
+        semestre TEXT NOT NULL
     )
 ''')
 
-# Tabla de materias académicas
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS academicos_materias (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         usuario_id INTEGER NOT NULL,
-        universidad TEXT NOT NULL,
-        carrera TEXT NOT NULL,
-        semestre TEXT NOT NULL,
         materia TEXT NOT NULL,
         dia TEXT NOT NULL,
         hora_inicio TEXT NOT NULL,
@@ -31,7 +29,6 @@ cursor.execute('''
     )
 ''')
 
-# Tabla de actividades extracurriculares
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS academicos_actividades (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
