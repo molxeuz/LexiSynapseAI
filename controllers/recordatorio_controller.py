@@ -24,6 +24,7 @@ class Recordatorio:
 
         return cls(mensaje=partes[1],hora=datetime.datetime.fromisoformat(partes[2]))
 
+
 """
 CRUD recordatorios.
 

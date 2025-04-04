@@ -28,6 +28,7 @@ class Tarea:
         except Exception as error:
             print(f"Error al crear tarea: {error}")
             return None
+
 """
 CRUD tareas.
 
