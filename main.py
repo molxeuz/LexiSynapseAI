@@ -30,7 +30,7 @@ def main(page: ft.Page):
     page.on_route_change = route_change
     page.go("/login")
 
-ft.app(target=main, view=ft.WEB_BROWSER)
+ft.app(target=main)
 
 """
 Inicializar la base de datos (llamando a database.py).
