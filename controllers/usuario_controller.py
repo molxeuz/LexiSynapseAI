@@ -1,7 +1,7 @@
 from database.database import conn, cursor
 
 class Usuario:
-    def __init__(self, nombre, correo, fecha_nacimiento, contraseña, universidad, carrera, semestre):
+    def __init__(self, nombre: str, correo: str, fecha_nacimiento: str, contraseña: str, universidad: str, carrera: str, semestre: str):
         self.nombre = nombre
         self.correo = correo
         self.fecha_nacimiento = fecha_nacimiento

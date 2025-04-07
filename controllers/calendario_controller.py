@@ -3,7 +3,7 @@ from tarea_controller import Tarea
 from recordatorio_controller import Recordatorio
 
 class Evento:
-    def __init__(self, nombre, inicio, fin):
+    def __init__(self, nombre: str, inicio: str, fin):
         self.nombre = nombre
         self.inicio = inicio
         self.fin = fin
