@@ -1,7 +1,7 @@
 from database.database import conn, cursor
 
 class Usuario:
-    def __init__(self, nombre, correo, fecha_nacimiento, contraseña, universidad, carrera, semestre):
+    def __init__(self, nombre: str, correo: str, fecha_nacimiento: str, contraseña: str, universidad: str, carrera: str, semestre: str):
         self.nombre = nombre
         self.correo = correo
         self.fecha_nacimiento = fecha_nacimiento
@@ -11,7 +11,7 @@ class Usuario:
         self.semestre = semestre
 
     @staticmethod
-    def registrar(nombre, correo, fecha_nacimiento, contraseña, universidad, carrera, semestre):
+    def registrar(nombre: str, correo: str, fecha_nacimiento: str, contraseña: str, universidad: str, carrera: str, semestre: str):
         if not all([nombre, correo, fecha_nacimiento, contraseña, universidad, carrera, semestre]):
             return "Todos los campos son obligatorios.", False, None
 
@@ -31,7 +31,7 @@ class Usuario:
             return f"Error al registrar: {e}", False, None
 
     @staticmethod
-    def login(correo, contraseña):
+    def login(correo: str, contraseña:str):
         cursor.execute("SELECT id, nombre, universidad, carrera, semestre FROM usuarios WHERE correo = ? AND contraseña = ?", (correo, contraseña))
         usuario = cursor.fetchone()
         if usuario:
@@ -39,7 +39,7 @@ class Usuario:
         return "Correo o contraseña incorrectos.", False
 
     @staticmethod
-    def registrar_datos_academicos(usuario_id, materias, actividades):
+    def registrar_datos_academicos(usuario_id: str, materias: str, actividades: str):
         if not usuario_id:
             return "Usuario no encontrado.", False
 
