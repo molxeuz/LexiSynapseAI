@@ -9,3 +9,26 @@ Aquí están los mockups que representan la interfaz del proyecto:
 
 ### Pantalla Principal
 ![Pantalla Principal](assets/PANTALLA_PRINCIPAL.png)
+
+## Pantalla Agregar Tarea
+![Pantalla_Tarea](assets/PANTALLA_TAREA.jpg)
+
+## Pantalla Agregar Recordatorio
+![Pantalla_Recordatorio](assets/PANTALLA_RECORDATORIO.jpg)
+
+## Pantalla IA
+![Pantalla_IA](assets/PANTALLA_IA.jpg)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
