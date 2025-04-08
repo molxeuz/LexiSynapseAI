@@ -1,5 +1,4 @@
 
-import datetime
 from tarea_controller import Tarea
 from recordatorio_controller import Recordatorio
 
