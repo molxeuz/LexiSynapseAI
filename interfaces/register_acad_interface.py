@@ -104,7 +104,7 @@ def academico_view(page):
             for card in actividades_inputs if card.content.controls[1].value.strip()
         ]
 
-        mensaje, exito, usuario_id = Usuario.registrar(
+        mensaje, exito, usuario_id = Usuario.registrar_usuario(
             usuario_data["nombre"],
             usuario_data["correo"],
             usuario_data["fecha_nacimiento"],
@@ -120,7 +120,7 @@ def academico_view(page):
             page.update()
             return
 
-        mensaje_academico, exito_academico = Usuario.registrar_datos_academicos(usuario_id, materias, actividades)
+        mensaje_academico, exito_academico = Usuario.registrar_academico(usuario_id, materias, actividades)
 
         if not exito_academico:
             resultado_text.value = mensaje_academico

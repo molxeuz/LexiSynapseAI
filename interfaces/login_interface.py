@@ -8,7 +8,7 @@ def login_view(page: ft.Page):
     resultado_text = ft.Text()
 
     def login(e):
-        msg, success = Usuario.login(correo_input.value, contraseña_input.value)
+        msg, success = Usuario.iniciar_sesion(correo_input.value, contraseña_input.value)
         resultado_text.value = msg
         resultado_text.color = "green" if success else "red"
         page.update()
