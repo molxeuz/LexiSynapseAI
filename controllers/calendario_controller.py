@@ -1,24 +1,23 @@
-import datetime
-from tarea_controller import Tarea
-from recordatorio_controller import Recordatorio
+from controllers.tarea_controller import Tarea
 
-class Evento:
-    def __init__(self, nombre: str, inicio: str, fin):
-        self.nombre = nombre
-        self.inicio = inicio
-        self.fin = fin
+class Calendario:
+    def __init__(self, id_usuario: int):
+        self.id_usuario: int = id_usuario
+        self.recordatorios:list[str]
+        self.Tareas:list[Tarea]
 
-    def __str__(self):
-        return f"{self.nombre} ({self.inicio} a {self.fin})"
+    def mostrar_calendario(self, vista: str) -> None:
+        pass
 
-    def convertir_a_texto(self):
-        return f"EVENTO, {self.nombre},{self.inicio.isoformat()}, {self.fin.isoformat()}"
+    def detalles_evento(self, id_evento: int) -> None:
+        pass
 
-    @classmethod
-    def crear_desde_texto(cls, texto):
-        partes = texto.strip().split(',', 3)
-        if len(partes) !=4 or partes[0] != "EVENTO":
-            return None
+    def editar_evento(self, id_evento: int) -> None:
+        pass
+
+    def eliminar_eventos(self, id_evento: int) -> None:
+        pass
+
 """
 Integración de eventos.
 
