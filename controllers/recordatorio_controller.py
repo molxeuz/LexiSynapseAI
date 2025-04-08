@@ -1,29 +1,23 @@
-"Para generar recordatorios de las tareas creadas en el calendario/tarea_controller.py"
-import datetime
 
 class Recordatorio:
-    def __init__(self, mensaje, hora):
-        self.mensaje = mensaje
-        self.hora = hora
+    def __init__(self,id_recordatorio: int, id_usuario: int, descripcion: str, fecha_entrega: str, estado: bool=False):
+        self.id_recordatorio: int = id_recordatorio
+        self.id_usuario: int = id_usuario
+        self.descripcion: str = descripcion
+        self.fecha_entrega: str = fecha_entrega
+        self.estado: bool = estado
 
-    def __str__(self):
-        return f" {self.mensaje}, {self.hora.strftime ('%Y-%m-%d %H:%M')}"
+    def crear_recordatorio(self, titulo: str, materia: str, fecha_entrega: str, descripcion: str):
+        pass
 
-    def convertir_a_texto(self):
-        return f"Recordatorio, {self.mensaje},{self.hora.isoformat()}"
+    def editar_recordatorio(self, id_recordatorio: int, nuevos_datos: dict):
+        pass
 
-    @classmethod
+    def eliminar_recordatorio(self, id_recordatorio: int):
+        pass
 
-    def crear_desde_texo(cls, texto):
-        partes = texto.strip().split(',', 2)
-        if len(partes) !=3 or partes[0] != " RECORDATORIO":
-            return None
-
-        if 'T' not in partes[2] or len(partes[2]) < 16:
-            return None
-
-        return cls(mensaje=partes[1],hora=datetime.datetime.fromisoformat(partes[2]))
-
+    def marcar_completada(self, id_recordatorio: int):
+        pass
 
 """
 CRUD recordatorios.
