@@ -4,7 +4,7 @@ from controllers.recordatorio_controller import Recordatorio
 class Calendario:
     def __init__(self, id_usuario: int):
         self.id_usuario: int = id_usuario
-        self.Tareas: list[Tarea]
+        self.Tarea: list[Tarea]
         self.Recordatorio: list[Recordatorio]
 
     def detalles_calendario(self, id_calendario: int) -> None:
