@@ -7,7 +7,7 @@ from interfaces.dashboard_interface import dashboard_view
 
 def main(page: ft.Page):
     page.title = "Sistema de Registro"
-    page.theme_mode = ft.ThemeMode.LIGHT
+    page.theme_mode = ft.ThemeMode.DARK
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
@@ -30,7 +30,7 @@ def main(page: ft.Page):
     page.on_route_change = route_change
     page.go("/login")
 
-ft.app(target=main)
+ft.app(target=main,view=ft.WEB_BROWSER)
 
 """
 Inicializar la base de datos (llamando a database.py).

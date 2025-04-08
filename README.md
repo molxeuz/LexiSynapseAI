@@ -32,28 +32,35 @@ LexiSynapseAI/
 │
 ├── database/
 │   └── database.py
-│   └── controllers.py
+│   └── models.sql
 │
 ├── controllers/
-│   ├── usuario_controller.py
-│   ├── tarea_controller.py
-│   ├── recordatorio_controller.py
+│   ├── __init__.py
 │   ├── calendario_controller.py
-│   └── ia_controller.py
+│   ├── ia_controller.py
+│   ├── recordatorio_controller.py
+│   ├── usuario_controller.py
+│   └── tarea_controller.py
 │
 ├── interfaces/
-│   ├── login_interface.py
-│   ├── register_user_usuario.py
-│   ├── register_acad_interface.py
-│   ├── dashboard_interface.py
-│   ├── tareas_interface.py
-│   ├── recordatorios_interface.py
+│   ├── __init__.py
 │   ├── calendario_interface.py
+│   ├── dashboard_interface.py
 │   ├── ia_interface.py
-│   └── perfil_interface.py
+│   ├── login_interface.py
+│   ├── profile_interface.py
+│   ├── recordatorios_interface.py
+│   ├── register_acad_interface.py
+│   ├── register_user_interface.py
+│   └── tareas_interface.py
 │
 ├── assets/
-│   └── (logos, iconos)
+│   ├── P_REGISTRARSE.png
+│   ├── PANTALLA_IA.jpg
+│   ├── PANTALLA_INICIO.jpg
+│   ├── PANTALLA_PRINCIPAL.png
+│   ├── PANTALLA_RECORDATORIO.jpg
+│   └── PANTALLA_TAREA.jpg
 │
 ├── mdViews/
 │   ├── MOCKUPS.md
@@ -78,11 +85,11 @@ LexiSynapseAI/
 
 ## 🛠 Tecnologías Utilizadas
 
-- **Python 3.x**
-- **Flet** (Interfaz gráfica)
+- **Python 3.13**
+- **Flet** **0.27.6** (Interfaz gráfica)
 - **SQLite (no definido)** (Base de datos en nube)
 - Arquitectura: **MVC (Modelo - Vista - Controlador)**
-- Integración: **IA (API externa o modelo personalizado DeepSeek)**
+- Integración: ** IA OpenAI 1.71.0**
 
 ---
 
