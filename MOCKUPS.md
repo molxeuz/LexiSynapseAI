@@ -19,6 +19,9 @@ Aquí están los mockups que representan la interfaz del proyecto:
 ## Pantalla IA
 ![Pantalla_IA](assets/mockup_asistente.jpg)
 
+## Pantalla Calendario 
+![Pantalla_Calendario](assets/finalMockup.png)
+
 
 
 
