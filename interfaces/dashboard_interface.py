@@ -106,5 +106,5 @@ def main(page: ft.Page):
 """
 Mostrar datos usuario, tareas, recordatorios.
 Conectar con tarea_controller.py, recordatorio_controller.py.
-Acceso a IA (conexión directa con asistente_controller.py).
+Acceso a IA (conexión directa con ia_controller.py).
 """
