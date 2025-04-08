@@ -91,7 +91,7 @@ def academico_view(page):
                 "hora_inicio": card.content.controls[3].value.strip(),
                 "hora_fin": card.content.controls[4].value.strip()
             }
-            for card in materias_inputs if card.content.controls[1].value.strip()  # Evita valores vacíos
+            for card in materias_inputs if card.content.controls[1].value.strip()
         ]
 
         actividades = [
@@ -101,10 +101,9 @@ def academico_view(page):
                 "hora_inicio": card.content.controls[3].value.strip(),
                 "hora_fin": card.content.controls[4].value.strip()
             }
-            for card in actividades_inputs if card.content.controls[1].value.strip()  # Evita valores vacíos
+            for card in actividades_inputs if card.content.controls[1].value.strip()
         ]
 
-        # Registrar usuario
         mensaje, exito, usuario_id = Usuario.registrar(
             usuario_data["nombre"],
             usuario_data["correo"],
@@ -121,7 +120,6 @@ def academico_view(page):
             page.update()
             return
 
-        # Registrar materias y actividades solo si hay usuario_id válido
         mensaje_academico, exito_academico = Usuario.registrar_datos_academicos(usuario_id, materias, actividades)
 
         if not exito_academico:
@@ -130,7 +128,7 @@ def academico_view(page):
         else:
             resultado_text.value = "Registro académico exitoso. Redirigiendo..."
             resultado_text.color = "green"
-            page.go("/login")  # Redirigir al login
+            page.go("/login")
 
         page.update()
 
