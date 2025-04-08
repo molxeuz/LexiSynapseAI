@@ -1,8 +1,9 @@
 
 class Tarea:
-    def __init__(self,id_tarea: int, id_usuario: int, descripcion: str, fecha_entrega: str, estado: bool=False):
+    def __init__(self,id_tarea: int, id_usuario: int, titulo_tarea: str, descripcion: str, fecha_entrega: str, estado: bool=False):
         self.id_tarea: int = id_tarea
         self.id_usuario: int = id_usuario
+        self.titulo_tarea: str = titulo_tarea
         self.descripcion: str = descripcion
         self.fecha_entrega: str = fecha_entrega
         self.estado: bool = estado
