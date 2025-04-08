@@ -85,11 +85,11 @@ LexiSynapseAI/
 
 ## 🛠 Tecnologías Utilizadas
 
-- **Python 3.x**
-- **Flet** (Interfaz gráfica)
+- **Python 3.13**
+- **Flet** **0.27.6** (Interfaz gráfica)
 - **SQLite (no definido)** (Base de datos en nube)
 - Arquitectura: **MVC (Modelo - Vista - Controlador)**
-- Integración: **IA (API externa o modelo personalizado DeepSeek)**
+- Integración: ** IA OpenAI 1.71.0**
 
 ---
 
