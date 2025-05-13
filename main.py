@@ -3,6 +3,8 @@ import flet as ft
 from interfaces.register_user_interface import registro_view
 from interfaces.register_acad_interface import academico_view
 from interfaces.login_interface import login_view
+from interfaces.tareas_interface import tareas_view
+from interfaces.calendario_interface import calendario_view
 from interfaces.dashboard_interface import dashboard_view
 
 def main(page: ft.Page):
@@ -23,6 +25,11 @@ def main(page: ft.Page):
             page.views.append(login_view(page))
         elif route == "/dashboard":
             page.views.append(dashboard_view(page))
+        elif route == "/tareas":
+            page.views.append(tareas_view(page))
+        elif route == "/calendario":
+            page.views.append(calendario_view(page))
+
         else:
             page.views.append(login_view(page))
         page.update()
