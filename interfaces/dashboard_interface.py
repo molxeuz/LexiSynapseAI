@@ -16,11 +16,11 @@ def dashboard_view(page: ft.Page):
             spacing=15
         )
 
-    def create_action_button(icon, text):
+    def create_action_button(icon, text, on_click=None):
         return ft.Column(
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             controls=[
-                ft.IconButton(icon=icon, icon_size=30),
+                ft.IconButton(icon=icon, icon_size=30, on_click=on_click),
                 ft.Text(text, size=12, text_align=ft.TextAlign.CENTER)
             ],
             spacing=5
@@ -38,9 +38,9 @@ def dashboard_view(page: ft.Page):
                 ft.Divider(height=40),
                 ft.Row(
                     controls=[
-                        create_action_button(ft.icons.ADD_CIRCLE_OUTLINE, "Añadir Tarea"),
+                        create_action_button(ft.icons.ADD_CIRCLE_OUTLINE, "Añadir Tarea", lambda e: page.go("/tareas")),
                         create_action_button(ft.icons.ASSIGNMENT, "Cuestionarios"),
-                        create_action_button(ft.icons.CALENDAR_MONTH, "Ver calendario"),
+                        create_action_button(ft.icons.CALENDAR_MONTH, "Ver calendario", on_click=lambda _: page.go("/calendario")),
                         create_action_button(ft.icons.NOTIFICATIONS, "Recordatorios"),
                         create_action_button(ft.icons.ANDROID, "Consultar IA"),
                     ],
@@ -67,11 +67,11 @@ def main(page: ft.Page):
             spacing=15
         )
 
-    def create_action_button(icon, text):
+    def create_action_button(icon, text, on_click=None):
         return ft.Column(
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             controls=[
-                ft.IconButton(icon=icon, icon_size=30),
+                ft.IconButton(icon=icon, icon_size=30, on_click=on_click),
                 ft.Text(text, size=12, text_align=ft.TextAlign.CENTER)
             ],
             spacing=5
