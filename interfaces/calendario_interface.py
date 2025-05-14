@@ -53,9 +53,10 @@ def calendario_view(page: ft.Page):
         mes_ano_label.value = f"{calendar.month_name[selected_month]} {selected_year}"
 
         encabezados = ft.Row(
-            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+            alignment=ft.MainAxisAlignment.CENTER,
+            spacing=1,
             controls=[
-                ft.Text(dia, weight="bold", width=50, text_align="center")
+                ft.Text(dia, weight="bold", width=60, text_align="center")
                 for dia in ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
             ]
         )
@@ -68,7 +69,7 @@ def calendario_view(page: ft.Page):
         dias = [fecha_inicio + timedelta(days=i) for i in range(42)]  # 6 semanas
 
         for semana in range(6):
-            fila = ft.Row(spacing=2, alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
+            fila = ft.Row(spacing=1, alignment=ft.MainAxisAlignment.CENTER)
             for i in range(7):
                 fecha_actual = dias[semana * 7 + i]
                 es_mes_actual = fecha_actual.month == selected_month
@@ -87,7 +88,7 @@ def calendario_view(page: ft.Page):
                             content=ft.Column(
                                 controls=[
                                     ft.Text(str(fecha_actual.day), text_align="center"),
-                                    ft.Text(tareas_texto.strip(), size=10, text_align="center")
+                                    ft.Text(tareas_texto.strip(), size=9, text_align="center")
                                 ],
                                 spacing=2,
                                 alignment=ft.MainAxisAlignment.CENTER,
@@ -95,9 +96,9 @@ def calendario_view(page: ft.Page):
                             ),
                             bgcolor="#2C2C2C" if es_mes_actual else "#1E1E1E",
                             border_radius=ft.border_radius.all(6),
-                            width=50,
-                            height=60,
-                            padding=5,
+                            width=60,
+                            height=55,
+                            padding=4,
                             alignment=ft.alignment.center
                         )
                     )
