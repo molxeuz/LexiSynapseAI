@@ -1,33 +1,41 @@
-# controllers/tarea_controller.py
+from database.database import cursor, conn
 
 class Tarea:
-    def __init__(self, nombre, fecha_entrega, prioridad, descripcion, asignatura):
+    def __init__(self, id, nombre, fecha_entrega, prioridad, descripcion, asignatura, completada):
+        self.id = id
         self.nombre = nombre
         self.fecha_entrega = fecha_entrega
         self.prioridad = prioridad
         self.descripcion = descripcion
         self.asignatura = asignatura
-        self.completada = False
+        self.completada = bool(completada)
 
     def marcar_completada(self):
+        nuevo_estado = 1 if not self.completada else 0
+        cursor.execute("UPDATE tareas SET completada = ? WHERE id = ?", (nuevo_estado, self.id))
+        conn.commit()
         self.completada = not self.completada
 
-
 class TareaController:
-    def __init__(self):
-        self.tareas = []
+    def __init__(self, usuario_id):
+        self.usuario_id = usuario_id
 
     def agregar_tarea(self, nombre, fecha_entrega, prioridad, descripcion, asignatura):
-        if not nombre or not fecha_entrega or not prioridad or not descripcion or not asignatura:
-            return False, "Por favor completa todos los campos"
+        if not nombre or not fecha_entrega or not prioridad:
+            return False, "Por favor completa los campos obligatorios."
 
-        nueva_tarea = Tarea(nombre, fecha_entrega, prioridad, descripcion, asignatura)
-        self.tareas.append(nueva_tarea)
-        return True, "Tarea añadida correctamente"
+        cursor.execute('''
+            INSERT INTO tareas (usuario_id, nombre, fecha_entrega, prioridad, descripcion, asignatura)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (self.usuario_id, nombre, fecha_entrega, prioridad, descripcion, asignatura))
+        conn.commit()
+        return True, "Tarea agregada correctamente."
 
     def obtener_tareas(self):
-        return self.tareas
-
-
-# Instancia global del controlador
-tarea_controller = TareaController()
+        cursor.execute('''
+            SELECT id, nombre, fecha_entrega, prioridad, descripcion, asignatura, completada
+            FROM tareas
+            WHERE usuario_id = ?
+        ''', (self.usuario_id,))
+        tareas = cursor.fetchall()
+        return [Tarea(*t) for t in tareas]

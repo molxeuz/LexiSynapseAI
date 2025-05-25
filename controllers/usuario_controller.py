@@ -1,7 +1,7 @@
 from database.database import conn, cursor
 
 class Usuario:
-    def __init__(self, nombre: str, correo: str, fecha_nacimiento: str, contraseña: str, universidad: str, carrera: str, semestre: str):
+    def __init__(self, nombre, correo, fecha_nacimiento, contraseña, universidad, carrera, semestre):
         self.nombre = nombre
         self.correo = correo
         self.fecha_nacimiento = fecha_nacimiento
@@ -11,7 +11,7 @@ class Usuario:
         self.semestre = semestre
 
     @staticmethod
-    def registrar_usuario(nombre: str, correo: str, fecha_nacimiento: str, contraseña: str, universidad: str, carrera: str, semestre: str):
+    def registrar_usuario(nombre, correo, fecha_nacimiento, contraseña, universidad, carrera, semestre):
         if not all([nombre, correo, fecha_nacimiento, contraseña, universidad, carrera, semestre]):
             return "Todos los campos son obligatorios.", False, None
 
@@ -31,15 +31,21 @@ class Usuario:
             return f"Error al registrar: {e}", False, None
 
     @staticmethod
-    def iniciar_sesion(correo: str, contraseña:str):
+    def iniciar_sesion(correo, contraseña):
         cursor.execute("SELECT id, nombre, universidad, carrera, semestre FROM usuarios WHERE correo = ? AND contraseña = ?", (correo, contraseña))
         usuario = cursor.fetchone()
         if usuario:
-            return {"id": usuario[0], "nombre": usuario[1], "universidad": usuario[2], "carrera": usuario[3], "semestre": usuario[4]}, True
+            return {
+                "id": usuario[0],
+                "nombre": usuario[1],
+                "universidad": usuario[2],
+                "carrera": usuario[3],
+                "semestre": usuario[4]
+            }, True
         return "Correo o contraseña incorrectos.", False
 
     @staticmethod
-    def registrar_academico(usuario_id: str, materias: str, actividades: str):
+    def registrar_academico(usuario_id, materias, actividades):
         if not usuario_id:
             return "Usuario no encontrado.", False
 
@@ -64,10 +70,3 @@ class Usuario:
             return "Registro académico exitoso.", True
         except Exception as e:
             return f"Error al registrar datos académicos: {e}", False
-
-"""
-Registro, login, perfil.
-Definir funciones de lógica.
-Conectar clases (models) con pantallas (interfaces).
-Validaciones y respuestas dinámicas.
-"""

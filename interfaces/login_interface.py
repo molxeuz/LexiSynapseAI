@@ -1,6 +1,7 @@
 import flet as ft
 from controllers.usuario_controller import Usuario
 
+
 def login_view(page: ft.Page):
     page.title = "Bienvenido de nuevo"
     page.padding = 0
@@ -27,13 +28,20 @@ def login_view(page: ft.Page):
     resultado_text = ft.Text(size=14)
 
     def login(e):
-        msg, success = Usuario.iniciar_sesion(correo_input.value, contraseña_input.value)
-        resultado_text.value = msg
-        resultado_text.color = "#00c853" if success else "#d50000"
-        page.update()
+        resultado, success = Usuario.iniciar_sesion(correo_input.value, contraseña_input.value)
 
         if success:
+            # Guardar el ID de usuario en el almacenamiento del cliente
+            page.client_storage.set("usuario_id", resultado["id"])
+
+            resultado_text.value = "Inicio de sesión exitoso"
+            resultado_text.color = "#00c853"
             page.go("/dashboard")
+        else:
+            resultado_text.value = resultado  # mensaje de error
+            resultado_text.color = "#d50000"
+
+        page.update()
 
     login_button = ft.ElevatedButton(
         " Ingresar",
