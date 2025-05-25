@@ -9,7 +9,7 @@ from interfaces.dashboard_interface import dashboard_view
 
 def main(page: ft.Page):
     page.title = "Sistema de Registro"
-    page.theme_mode = ft.ThemeMode.SYSTEM
+    page.theme_mode = ft.ThemeMode.LIGHT
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 

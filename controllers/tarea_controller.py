@@ -1,28 +1,33 @@
+# controllers/tarea_controller.py
 
 class Tarea:
-    def __init__(self,id_tarea: int, id_usuario: int, titulo_tarea: str, descripcion: str, fecha_entrega: str, estado: bool=False):
-        self.id_tarea: int = id_tarea
-        self.id_usuario: int = id_usuario
-        self.titulo_tarea: str = titulo_tarea
-        self.descripcion: str = descripcion
-        self.fecha_entrega: str = fecha_entrega
-        self.estado: bool = estado
+    def __init__(self, nombre, fecha_entrega, prioridad, descripcion, asignatura):
+        self.nombre = nombre
+        self.fecha_entrega = fecha_entrega
+        self.prioridad = prioridad
+        self.descripcion = descripcion
+        self.asignatura = asignatura
+        self.completada = False
 
-    def crear_tarea(self, titulo: str, materia: str, fecha_entrega: str, descripcion: str):
-        pass
+    def marcar_completada(self):
+        self.completada = not self.completada
 
-    def editar_tarea(self, id_tarea: int, nuevos_datos: dict):
-        pass
 
-    def eliminar_tarea(self, id_tarea: int):
-        pass
+class TareaController:
+    def __init__(self):
+        self.tareas = []
 
-    def marcar_completada(self, id_tarea: int):
-        pass
+    def agregar_tarea(self, nombre, fecha_entrega, prioridad, descripcion, asignatura):
+        if not nombre or not fecha_entrega or not prioridad or not descripcion or not asignatura:
+            return False, "Por favor completa todos los campos"
 
-"""
-CRUD tareas.
-Definir funciones de lógica.
-Conectar clases (models) con pantallas (interfaces).
-Validaciones y respuestas dinámicas.
-"""
+        nueva_tarea = Tarea(nombre, fecha_entrega, prioridad, descripcion, asignatura)
+        self.tareas.append(nueva_tarea)
+        return True, "Tarea añadida correctamente"
+
+    def obtener_tareas(self):
+        return self.tareas
+
+
+# Instancia global del controlador
+tarea_controller = TareaController()
