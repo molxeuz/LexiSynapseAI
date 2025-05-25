@@ -2,10 +2,14 @@ import os
 from openai import OpenAI
 from dotenv import load_dotenv
 
+load_dotenv()
+
 class AsistenteIA:
-    def __init__(self, id_usuario: int, consulta: str):
-        self.id_usuario: int = id_usuario
-        self.consulta: str = consulta
+    def __init__(self):
+        api_key = os.getenv("DEEPSEEK_API_KEY")
+        if not api_key:
+            raise ValueError("No se encontró DEEPSEEK_API_KEY en las variables de entorno")
+        
 
     def consultar_ia(self, consulta: str) -> None:
         pass
