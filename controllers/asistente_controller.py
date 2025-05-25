@@ -1,3 +1,6 @@
+import os
+from openai import OpenAI
+from dotenv import load_dotenv
 
 class AsistenteIA:
     def __init__(self, id_usuario: int, consulta: str):
