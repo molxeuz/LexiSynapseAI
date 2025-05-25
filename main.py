@@ -11,7 +11,7 @@ from interfaces.recordatorios_interface import recordatorios_view
 
 def main(page: ft.Page):
     page.title = "Sistema de Registro"
-    page.theme_mode = ft.ThemeMode.SYSTEM
+    page.theme_mode = ft.ThemeMode.LIGHT
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
@@ -42,10 +42,3 @@ def main(page: ft.Page):
 
 ft.app(target=main, view=ft.WEB_BROWSER)
 
-"""
-Inicializar la base de datos (llamando a database.py).
-Cargar pantallas (interfaces) según navegación.
-Controlar navegación: login, registro, dashboard, IA, calendario, etc.
-Integrar todas las clases y controladores.
-Control de sesión de usuario activo.
-"""

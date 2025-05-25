@@ -1,28 +1,41 @@
+from database.database import cursor, conn
 
 class Tarea:
-    def __init__(self,id_tarea: int, id_usuario: int, titulo_tarea: str, descripcion: str, fecha_entrega: str, estado: bool=False):
-        self.id_tarea: int = id_tarea
-        self.id_usuario: int = id_usuario
-        self.titulo_tarea: str = titulo_tarea
-        self.descripcion: str = descripcion
-        self.fecha_entrega: str = fecha_entrega
-        self.estado: bool = estado
+    def __init__(self, id, nombre, fecha_entrega, prioridad, descripcion, asignatura, completada):
+        self.id = id
+        self.nombre = nombre
+        self.fecha_entrega = fecha_entrega
+        self.prioridad = prioridad
+        self.descripcion = descripcion
+        self.asignatura = asignatura
+        self.completada = bool(completada)
 
-    def crear_tarea(self, titulo: str, materia: str, fecha_entrega: str, descripcion: str):
-        pass
+    def marcar_completada(self):
+        nuevo_estado = 1 if not self.completada else 0
+        cursor.execute("UPDATE tareas SET completada = ? WHERE id = ?", (nuevo_estado, self.id))
+        conn.commit()
+        self.completada = not self.completada
 
-    def editar_tarea(self, id_tarea: int, nuevos_datos: dict):
-        pass
+class TareaController:
+    def __init__(self, usuario_id):
+        self.usuario_id = usuario_id
 
-    def eliminar_tarea(self, id_tarea: int):
-        pass
+    def agregar_tarea(self, nombre, fecha_entrega, prioridad, descripcion, asignatura):
+        if not nombre or not fecha_entrega or not prioridad:
+            return False, "Por favor completa los campos obligatorios."
 
-    def marcar_completada(self, id_tarea: int):
-        pass
+        cursor.execute('''
+            INSERT INTO tareas (usuario_id, nombre, fecha_entrega, prioridad, descripcion, asignatura)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (self.usuario_id, nombre, fecha_entrega, prioridad, descripcion, asignatura))
+        conn.commit()
+        return True, "Tarea agregada correctamente."
 
-"""
-CRUD tareas.
-Definir funciones de lógica.
-Conectar clases (models) con pantallas (interfaces).
-Validaciones y respuestas dinámicas.
-"""
+    def obtener_tareas(self):
+        cursor.execute('''
+            SELECT id, nombre, fecha_entrega, prioridad, descripcion, asignatura, completada
+            FROM tareas
+            WHERE usuario_id = ?
+        ''', (self.usuario_id,))
+        tareas = cursor.fetchall()
+        return [Tarea(*t) for t in tareas]
