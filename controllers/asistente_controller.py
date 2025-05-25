@@ -35,8 +35,21 @@ class AsistenteIA:
             return self._handle_stream_response(response)
         return response.choices[0].message.content
 
-    def sugerencias_estudio(self, id_usuario: int) -> None:
-        pass
+    def recomendar_documentos(self, tema, nivel=None, idioma="español"):
+        prompt = (
+            f"Por favor recomienda documentos, libros, artículos académicos o recursos en línea "
+            f"para estudiar {tema}"
+        )
+
+        if nivel:
+            prompt += f" a nivel {nivel}"
+
+        prompt += (
+            f". Preferiblemente en {idioma}. Incluye títulos, autores (si aplica), "
+            f"y enlaces cuando sea posible. Organiza las recomendaciones por tipo de recurso."
+        )
+
+        return self.consultar_ia(prompt)
 
 """
 Consultas IA.
