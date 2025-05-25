@@ -6,6 +6,8 @@ from interfaces.login_interface import login_view
 from interfaces.tareas_interface import tareas_view
 from interfaces.calendario_interface import calendario_view
 from interfaces.dashboard_interface import dashboard_view
+from interfaces.recordatorios_interface import recordatorios_view
+
 
 def main(page: ft.Page):
     page.title = "Sistema de Registro"
@@ -29,7 +31,8 @@ def main(page: ft.Page):
             page.views.append(tareas_view(page))
         elif route == "/calendario":
             page.views.append(calendario_view(page))
-
+        elif route == "/recordatorios":
+            page.views.append(recordatorios_view(page))
         else:
             page.views.append(login_view(page))
         page.update()
@@ -37,7 +40,7 @@ def main(page: ft.Page):
     page.on_route_change = route_change
     page.go("/login")
 
-ft.app(target=main,view=ft.WEB_BROWSER)
+ft.app(target=main, view=ft.WEB_BROWSER)
 
 """
 Inicializar la base de datos (llamando a database.py).
