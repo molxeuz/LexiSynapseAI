@@ -1,5 +1,5 @@
-from controllers.tarea_controller import Tarea
-from controllers.recordatorio_controller import Recordatorio
+from src.controllers.tarea_controller import Tarea
+from src.controllers.recordatorio_controller import Recordatorio
 
 class Calendario:
     def __init__(self, id_usuario: int):

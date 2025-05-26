@@ -1,5 +1,5 @@
 import flet as ft
-from controllers.asistente_controller import AsistenteIA
+from src.controllers.asistente_controller import AsistenteIA
 
 
 def main(page: ft.Page):

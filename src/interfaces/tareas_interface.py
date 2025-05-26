@@ -1,12 +1,12 @@
 import flet as ft
-from controllers.tarea_controller import TareaController
+from src.controllers.tarea_controller import TareaController
 from datetime import datetime
 
 PRIORIDAD_ORDEN = {"Alta": 0, "Media": 1, "Baja": 2}
 PRIORIDAD_COLOR = {
-    "Alta": ft.colors.RED_100,
-    "Media": ft.colors.ORANGE_100,
-    "Baja": ft.colors.GREEN_100,
+    "Alta": ft.Colors.RED_100,
+    "Media": ft.Colors.ORANGE_100,
+    "Baja": ft.Colors.GREEN_100,
 }
 
 def tareas_view(page: ft.Page):

@@ -1,4 +1,4 @@
-from database.database import conn, cursor
+from src.database.database import conn, cursor
 
 class Usuario:
     def __init__(self, nombre, correo, fecha_nacimiento, contraseña, universidad, carrera, semestre):

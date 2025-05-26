@@ -1,6 +1,6 @@
 
 import flet as ft
-from controllers.usuario_controller import Usuario
+
 
 def registro_view(page: ft.Page):
     page.title = "Registro de Usuario"

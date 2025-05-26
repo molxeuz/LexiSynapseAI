@@ -1,12 +1,12 @@
-
 import flet as ft
-from interfaces.register_user_interface import registro_view
-from interfaces.register_acad_interface import academico_view
-from interfaces.login_interface import login_view
-from interfaces.tareas_interface import tareas_view
-from interfaces.calendario_interface import calendario_view
-from interfaces.dashboard_interface import dashboard_view
-from interfaces.recordatorios_interface import recordatorios_view
+
+from src.interfaces.register_user_interface import registro_view
+from src.interfaces.register_acad_interface import academico_view
+from src.interfaces.login_interface import login_view
+from src.interfaces.tareas_interface import tareas_view
+from src.interfaces.calendario_interface import calendario_view
+from src.interfaces.dashboard_interface import dashboard_view
+from src.interfaces.recordatorios_interface import recordatorios_view
 
 
 def main(page: ft.Page):
