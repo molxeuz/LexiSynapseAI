@@ -53,7 +53,7 @@ wheels = [
 
 [[package]]
 name = "flet"
-version = "0.28.3"
+version = "0.27.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx", marker = "platform_system != 'Pyodide'" },
@@ -61,7 +61,7 @@ dependencies = [
     { name = "repath" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/2f/d0/9ba4ee34972e9e0cf54b1f7d17c695491632421f81301993f2aec8d12105/flet-0.28.3-py3-none-any.whl", hash = "sha256:649bfc4af7933956ecf44963df6c0d997bff9ceeaf89d3c86d96803840cab83e", size = 463000 },
+    { url = "https://files.pythonhosted.org/packages/43/30/733bcbd546f392f2ab788b24783d1279d75b5c67437b9d5cbad29e19be9d/flet-0.27.6-py3-none-any.whl", hash = "sha256:9150ab866f4863a965556264008b0669c7da1ef9f611376937199cce6703090a", size = 541536 },
 ]
 
 [[package]]
@@ -159,7 +159,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "flet", specifier = ">=0.28.3" },
+    { name = "flet", specifier = "==0.27.6" },
     { name = "openai", specifier = ">=1.82.0" },
     { name = "pip", specifier = ">=25.1.1" },
     { name = "python-dotenv", specifier = ">=1.1.0" },
