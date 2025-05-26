@@ -1,4 +1,4 @@
-from database.database import cursor, conn
+from src.database.database import cursor, conn
 
 class Tarea:
     def __init__(self, id, nombre, fecha_entrega, prioridad, descripcion, asignatura, completada):

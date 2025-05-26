@@ -1,5 +1,5 @@
 import flet as ft
-from controllers.usuario_controller import Usuario
+from src.controllers.usuario_controller import Usuario
 
 
 def login_view(page: ft.Page):
