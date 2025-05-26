@@ -3,7 +3,6 @@
 ## 👨‍💻 Desarrolladores
 - Mateo Molina Gonzalez - [molxeuz](https://github.com/molxeuz)  
 - Moises Joshua Herrera Galindo - [Moshua53](https://github.com/Moshua53)  
-- Andres David Agudelo Henao - [TheNameAndresWasTaken](https://github.com/TheNameAndresWasTaken)  
 - Samuel David Gutierrez Mejia - [samuek1](https://github.com/samuek1)  
 
 
