@@ -1,181 +1,256 @@
 import flet as ft
 from src.controllers.asistente_controller import AsistenteIA
 
+asistente = AsistenteIA()
 
-def main(page: ft.Page):
-    # Configuración inicial de la página
-    page.title = "Asistente DeepSeek"
-    page.theme_mode = ft.ThemeMode.LIGHT
-    page.window_width = 800
-    page.window_height = 700
-    page.padding = 20
-    page.scroll = "auto"
+def ia_view(page: ft.Page):
+    # Configuración de tema
+    page.theme = ft.Theme(
+        color_scheme=ft.ColorScheme(
+            primary=ft.colors.BLUE_800,
+            secondary=ft.colors.CYAN_600,
+            surface=ft.colors.WHITE,
+        ),
+    )
 
-    # Intentar inicializar la IA
-    try:
-        ai = AsistenteIA()
-    except ValueError as e:
-        page.add(ft.Text(f"Error: {str(e)}", color="red"))
-        return
-
-    # Elementos de la interfaz
-    historial = []
-
-    # Crear controles
-    pregunta_field = ft.TextField(
-        label="Tu pregunta",
+    # Campo para consultar_ia
+    pregunta_input = ft.TextField(
+        label="Ingrese su pregunta",
         multiline=True,
         min_lines=3,
         max_lines=5,
         expand=True,
-        hint_text="Escribe tu consulta aquí...",
-        autofocus=True
+        border_color=ft.colors.BLUE_GREY_300,
+        filled=True,
+        fill_color=ft.colors.GREY_50,
+        hint_text="Escriba aquí su pregunta para la IA...",
     )
 
-    contexto_field = ft.TextField(
-        label="Contexto (opcional)",
-        multiline=True,
-        min_lines=2,
-        max_lines=4,
+    # Campos para recomendar_documentos
+    tema_input = ft.TextField(
+        label="Tema de interés",
         expand=True,
-        hint_text="Contexto adicional para la consulta"
+        border_color=ft.colors.BLUE_GREY_300,
+        filled=True,
+        fill_color=ft.colors.GREY_50,
+        hint_text="Ej: Machine Learning, Python avanzado...",
     )
 
     nivel_dropdown = ft.Dropdown(
-        label="Nivel",
-        options=[ft.dropdown.Option(o) for o in ["principiante", "intermedio", "avanzado"]],
-        visible=False
+        label="Nivel de conocimiento",
+        options=[
+            ft.dropdown.Option("Cualquiera"),
+            ft.dropdown.Option("Principiante"),
+            ft.dropdown.Option("Intermedio"),
+            ft.dropdown.Option("Avanzado"),
+        ],
+        value="Cualquiera",
+        border_color=ft.colors.BLUE_GREY_300,
+        filled=True,
+        fill_color=ft.colors.GREY_50,
     )
 
     idioma_dropdown = ft.Dropdown(
-        label="Idioma",
-        options=[ft.dropdown.Option(o) for o in ["español", "inglés", "francés", "alemán"]],
+        label="Idioma preferido",
+        options=[
+            ft.dropdown.Option("español"),
+            ft.dropdown.Option("inglés"),
+            ft.dropdown.Option("francés"),
+        ],
         value="español",
-        visible=False
+        border_color=ft.colors.BLUE_GREY_300,
+        filled=True,
+        fill_color=ft.colors.GREY_50,
     )
 
-    mode_switch = ft.Switch(label="Modo recomendación de documentos", value=False)
-
-    respuesta_area = ft.Column(scroll="auto", expand=True)
-
-    progress_bar = ft.ProgressBar(visible=False, width=400)
-
-    historial_dialog = ft.AlertDialog(
-        title=ft.Text("Historial"),
-        content=ft.Column(scroll="auto", height=400),
-        actions=[ft.TextButton("Cerrar", on_click=lambda e: cerrar_dialogo())]
+    # Indicador de procesamiento
+    processing_indicator = ft.Row(
+        [
+            ft.ProgressRing(width=20, height=20, stroke_width=2, visible=False),
+            ft.Text("Procesando tu pregunta...", visible=False),
+        ],
+        spacing=10,
+        visible=False,
     )
 
-    # Funciones de eventos
-    def toggle_mode(e):
-        if mode_switch.value:
-            nivel_dropdown.visible = True
-            idioma_dropdown.visible = True
-            contexto_field.visible = False
-            pregunta_field.label = "Tema de estudio"
-            pregunta_field.hint_text = "Ej: Inteligencia Artificial, Filosofía..."
-        else:
-            nivel_dropdown.visible = False
-            idioma_dropdown.visible = False
-            contexto_field.visible = True
-            pregunta_field.label = "Tu pregunta"
-            pregunta_field.hint_text = "Escribe tu consulta aquí..."
-        page.update()
+    # Resultados con scroll y mejor visualización
+    respuesta_output = ft.Column(
+        [
+            ft.Text("Respuesta:", size=16, weight="bold", color=ft.colors.BLUE_800),
+            ft.Container(
+                content=ft.Column(
+                    [
+                        ft.Markdown(
+                            "Aquí aparecerá la respuesta generada por la IA...",
+                            selectable=True,
+                            extension_set="gitHubWeb",
+                        )
+                    ],
+                    scroll=ft.ScrollMode.AUTO,
+                ),
+                padding=15,
+                border_radius=10,
+                bgcolor=ft.colors.GREY_50,
+                border=ft.border.all(1, ft.colors.BLUE_GREY_200),
+                expand=True,
+            ),
+        ],
+        spacing=10,
+        expand=True,
+    )
 
-    def enviar_consulta(e):
-        if not pregunta_field.value:
-            mostrar_error("Por favor escribe una pregunta o tema")
+    # Botones
+    boton_consultar = ft.ElevatedButton(
+        text="Consultar IA",
+        icon=ft.icons.SEARCH,
+        style=ft.ButtonStyle(
+            padding=20,
+            shape=ft.RoundedRectangleBorder(radius=10),
+        ),
+        color=ft.colors.WHITE,
+        bgcolor=ft.colors.BLUE_800,
+    )
+
+    boton_recomendar = ft.ElevatedButton(
+        text="Buscar Documentos",
+        icon=ft.icons.BOOK,
+        style=ft.ButtonStyle(
+            padding=20,
+            shape=ft.RoundedRectangleBorder(radius=10),
+        ),
+        color=ft.colors.WHITE,
+        bgcolor=ft.colors.CYAN_600,
+    )
+
+    # Funciones de los botones
+    async def on_consultar_click(e):
+        pregunta = pregunta_input.value.strip()
+
+        if not pregunta:
+            respuesta_output.controls[1].content.controls[0].value = "⚠️ Por favor ingresa una pregunta."
+            page.update()
             return
 
-        progress_bar.visible = True
-        enviar_btn.disabled = True
-        respuesta_area.controls.append(ft.Text("Procesando...", italic=True))
+        # Mostrar indicador de procesamiento
+        processing_indicator.visible = True
+        respuesta_output.controls[1].content.controls[0].value = "🔍 Procesando tu consulta..."
         page.update()
 
         try:
-            if mode_switch.value:
-                respuesta = ai.recomendar_documentos(
-                    pregunta_field.value,
-                    nivel=nivel_dropdown.value,
-                    idioma=idioma_dropdown.value
-                )
-            else:
-                respuesta = ai.consultar_ia(
-                    pregunta_field.value,
-                    contexto=contexto_field.value
-                )
-
-            respuesta_area.controls.clear()
-            respuesta_area.controls.append(ft.Text("Respuesta:", weight="bold"))
-            respuesta_area.controls.append(ft.Text(respuesta, selectable=True))
-
-            historial.append({
-                "pregunta": pregunta_field.value,
-                "respuesta": respuesta
-            })
-
+            respuesta = asistente.consultar_ia(pregunta)
+            respuesta_output.controls[1].content.controls[0].value = respuesta
         except Exception as ex:
-            mostrar_error(f"Error: {str(ex)}")
+            respuesta_output.controls[1].content.controls[0].value = f"❌ Error al consultar: {str(ex)}"
         finally:
-            progress_bar.visible = False
-            enviar_btn.disabled = False
+            # Ocultar indicador de procesamiento
+            processing_indicator.visible = False
             page.update()
 
-    def mostrar_historial(e):
-        historial_dialog.content.controls = [
-            ft.Text(f"{i + 1}. {item['pregunta']}", weight="bold")
-            for i, item in enumerate(historial)
-        ]
-        historial_dialog.open = True
+    async def on_recomendar_click(e):
+        tema = tema_input.value.strip()
+        nivel = nivel_dropdown.value
+        idioma = idioma_dropdown.value
+
+        if not tema:
+            respuesta_output.controls[1].content.controls[0].value = "⚠️ Por favor ingresa un tema."
+            page.update()
+            return
+
+        # Mostrar indicador de procesamiento
+        processing_indicator.visible = True
+        respuesta_output.controls[1].content.controls[0].value = "🔍 Buscando documentos recomendados..."
         page.update()
 
-    def cerrar_dialogo():
-        historial_dialog.open = False
-        page.update()
+        try:
+            respuesta = asistente.recomendar_documentos(tema, nivel if nivel != "Cualquiera" else None, idioma)
+            respuesta_output.controls[1].content.controls[0].value = respuesta
+        except Exception as ex:
+            respuesta_output.controls[1].content.controls[0].value = f"❌ Error al recomendar: {str(ex)}"
+        finally:
+            # Ocultar indicador de procesamiento
+            processing_indicator.visible = False
+            page.update()
 
-    def mostrar_error(mensaje):
-        page.snack_bar = ft.SnackBar(
-            ft.Text(mensaje, color="white"),
-            bgcolor="red"
-        )
-        page.snack_bar.open = True
-        page.update()
+    boton_consultar.on_click = on_consultar_click
+    boton_recomendar.on_click = on_recomendar_click
 
-    # Configurar eventos
-    mode_switch.on_change = toggle_mode
-    enviar_btn = ft.ElevatedButton("Enviar", icon="send", on_click=enviar_consulta)
-
-    # Diseño de la interfaz
-    page.add(
-        ft.Column([
-            ft.Container(
-                ft.Column([
-                    ft.Row([
-                        ft.Icon("rocket_launch", color="blue"),
-                        ft.Text("DeepSeek AI", size=24, weight="bold")
-                    ], alignment="center"),
-                    ft.Text("Asistente de consultas inteligentes", italic=True, color="blue")
-                ], horizontal_alignment="center"),
-                padding=20
+    # Diseño de pestañas
+    tabs = ft.Tabs(
+        selected_index=0,
+        animation_duration=300,
+        tabs=[
+            ft.Tab(
+                text="Consulta IA",
+                icon=ft.icons.QUESTION_ANSWER,
+                content=ft.Container(
+                    content=ft.Column(
+                        [
+                            ft.Text("Consulta a la Inteligencia Artificial",
+                                   style=ft.TextThemeStyle.HEADLINE_MEDIUM),
+                            pregunta_input,
+                            processing_indicator,
+                            ft.Container(
+                                boton_consultar,
+                                alignment=ft.alignment.center_right,
+                            ),
+                        ],
+                        spacing=20,
+                    ),
+                    padding=20,
+                ),
             ),
-            mode_switch,
-            ft.Divider(),
-            pregunta_field,
-            contexto_field,
-            ft.Row([nivel_dropdown, idioma_dropdown]),
-            ft.Row([
-                enviar_btn,
-                ft.IconButton("history", on_click=mostrar_historial)
-            ], alignment="spaceBetween"),
-            progress_bar,
-            ft.Text("Respuesta:", weight="bold"),
-            ft.Container(
-                respuesta_area,
-                border=ft.border.all(1),
-                padding=10,
-                expand=True
-            )
-        ], expand=True)
+            ft.Tab(
+                text="Documentos",
+                icon=ft.icons.BOOK,
+                content=ft.Container(
+                    content=ft.Column(
+                        [
+                            ft.Text("Recomendación de Documentos",
+                                   style=ft.TextThemeStyle.HEADLINE_MEDIUM),
+                            tema_input,
+                            ft.Row(
+                                [
+                                    nivel_dropdown,
+                                    idioma_dropdown,
+                                ],
+                                spacing=20,
+                                expand=True,
+                            ),
+                            ft.Container(
+                                boton_recomendar,
+                                alignment=ft.alignment.center_right,
+                            ),
+                        ],
+                        spacing=20,
+                    ),
+                    padding=20,
+                ),
+            ),
+        ],
+        expand=1,
     )
 
-    page.dialog = historial_dialog
+    return ft.View(
+        route="/ia_view",
+        controls=[
+            ft.AppBar(
+                title=ft.Text("Asistente IA", style=ft.TextThemeStyle.HEADLINE_SMALL),
+                center_title=True,
+                bgcolor=ft.colors.BLUE_800,
+                color=ft.colors.WHITE,
+                actions=[
+                    ft.IconButton(ft.icons.HELP_OUTLINE, tooltip="Ayuda"),
+                ],
+            ),
+            ft.Column(
+                [
+                    tabs,
+                    ft.Divider(height=1),
+                    respuesta_output,
+                ],
+                expand=True,
+                spacing=0,
+            ),
+        ],
+        padding=0,
+    )

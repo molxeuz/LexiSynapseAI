@@ -41,7 +41,8 @@ def dashboard_view(page: ft.Page):
                         create_action_button(ft.icons.ADD_CIRCLE_OUTLINE, "Añadir Tarea", lambda e: page.go("/tareas")),
                         create_action_button(ft.icons.CALENDAR_MONTH, "Ver calendario", on_click=lambda _: page.go("/calendario")),
                         create_action_button(ft.icons.NOTIFICATIONS, "Recordatorios", on_click=lambda _: page.go("/recordatorios")),
-                        create_action_button(ft.icons.ANDROID, "Consultar IA"),
+                        create_action_button(ft.icons.ANDROID, "Consultar IA", on_click = lambda _: page.go("/ia_view"))
+
                     ],
                     alignment=ft.MainAxisAlignment.SPACE_EVENLY
                 )
