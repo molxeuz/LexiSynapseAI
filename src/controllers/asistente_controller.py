@@ -1,3 +1,9 @@
+
+"""
+Clase AsistenteIA para consultas con API Deepseek.
+Manejo de interacción con modelo IA y generación de recomendaciones.
+"""
+
 import os
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -11,7 +17,7 @@ class AsistenteIA:
             raise ValueError("No se encontró DEEPSEEK_API_KEY en las variables de entorno")
         self.client = OpenAI(
             api_key=api_key,
-            base_url="https://api.deepseek.com"  # Alternativa: "https://api.deepseek.com/v1"
+            base_url="https://api.deepseek.com"
         )
         self.default_model = "deepseek-chat"
         self.default_temperature = 0.7

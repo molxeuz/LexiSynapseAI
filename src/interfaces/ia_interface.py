@@ -1,3 +1,11 @@
+
+"""
+Vista del Asistente Inteligente (IA).
+Permite realizar consultas a un modelo de IA y obtener recomendaciones de documentos basados en tema, nivel e idioma.
+Incluye dos secciones: consulta general y recomendación de recursos de aprendizaje.
+Requiere el controlador AsistenteIA.
+"""
+
 import flet as ft
 from src.controllers.asistente_controller import AsistenteIA
 
@@ -7,7 +15,6 @@ def ia_view(page: ft.Page):
     page.title = "Asistente Inteligente"
     page.bgcolor = ft.colors.GREY_100
 
-    # Entrada y salida: Consulta IA
     pregunta_input = ft.TextField(
         label="Pregunta a la IA",
         multiline=True,
@@ -31,7 +38,6 @@ def ia_view(page: ft.Page):
         expand=True
     )
 
-    # Entrada y salida: Recomendación de documentos
     tema_input = ft.TextField(
         label="Tema de interés",
         filled=True,
@@ -81,13 +87,11 @@ def ia_view(page: ft.Page):
         expand=True
     )
 
-    # Carga visual para IA
     ia_loading = ft.Row([
         ft.ProgressRing(width=20, height=20, stroke_width=3, visible=False),
         ft.Text("Consultando la IA...", visible=False),
     ], spacing=10)
 
-    # Carga visual para recomendaciones
     docs_loading = ft.Row([
         ft.ProgressRing(width=20, height=20, stroke_width=3, visible=False),
         ft.Text("Buscando recomendaciones...", visible=False),
@@ -145,7 +149,6 @@ def ia_view(page: ft.Page):
             ft.Text("Asistente Inteligente", size=32, weight="bold", color=ft.colors.BLUE_GREY_900),
             ft.ResponsiveRow([
 
-                # Tarjeta: Consulta a la IA
                 ft.Container(
                     content=ft.Column([
                         ft.Text("Consulta a la IA", size=20, weight="bold", color=ft.colors.BLUE_GREY_800),
@@ -163,7 +166,6 @@ def ia_view(page: ft.Page):
                     shadow=ft.BoxShadow(color=ft.colors.BLACK12, blur_radius=8),
                 ),
 
-                # Tarjeta: Recomendación de documentos
                 ft.Container(
                     content=ft.Column([
                         ft.Text("Recomendación de Documentos", size=20, weight="bold", color=ft.colors.BLUE_GREY_800),
@@ -183,7 +185,6 @@ def ia_view(page: ft.Page):
                 ),
             ], spacing=20),
 
-            # Botón volver
             ft.Row([
                 ft.IconButton(icon=ft.icons.ARROW_BACK, tooltip="Volver", on_click=lambda _: page.go("/dashboard")),
                 ft.TextButton("Volver al Dashboard", on_click=lambda _: page.go("/dashboard"))

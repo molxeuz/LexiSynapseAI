@@ -1,3 +1,10 @@
+
+"""
+Vista del dashboard principal.
+Muestra un resumen de tareas próximas y accesos rápidos a otras funcionalidades como tareas, calendario e IA.
+Requiere que el usuario haya iniciado sesión (usuario_id en client_storage).
+"""
+
 import flet as ft
 from src.controllers.tarea_controller import TareaController
 

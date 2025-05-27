@@ -1,6 +1,11 @@
+
+"""
+Vista de registro académico.
+Permite agregar materias y actividades, validar datos y completar el registro del usuario.
+"""
+
 import flet as ft
 from src.controllers.usuario_controller import Usuario
-
 
 def academico_view(page):
     parametros = page.route.split("?")
@@ -148,7 +153,6 @@ def academico_view(page):
 
         page.update()
 
-    # Aquí se agregan 1 materia y 1 actividad desde el inicio
     agregar_materia()
     agregar_actividad()
 

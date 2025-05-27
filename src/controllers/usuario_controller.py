@@ -1,3 +1,9 @@
+
+"""
+Clase Usuario para manejar registro, inicio de sesión y datos académicos.
+Incluye validaciones y operaciones con la base de datos SQLite.
+"""
+
 from src.database.database import conn, cursor
 
 class Usuario:

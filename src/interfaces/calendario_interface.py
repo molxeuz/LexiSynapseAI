@@ -1,3 +1,10 @@
+
+"""
+Vista de Calendario Interactivo.
+Permite visualizar un calendario mensual, navegar entre meses y asignar tareas por día.
+Las tareas se muestran por fecha y pueden agregarse a través de un modal interactivo.
+"""
+
 import flet as ft
 import calendar
 from datetime import datetime, timedelta

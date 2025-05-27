@@ -1,3 +1,10 @@
+
+"""
+Vista de gestión de tareas.
+Permite agregar, listar y marcar tareas como completadas. Ordena por prioridad y fecha.
+Requiere sesión iniciada (usuario_id en client_storage).
+"""
+
 import flet as ft
 from src.controllers.tarea_controller import TareaController
 from datetime import datetime
@@ -25,7 +32,6 @@ def tareas_view(page: ft.Page):
     controller = TareaController(usuario_id)
     page.title = "Gestión de Tareas"
 
-    # Campos para crear tarea
     nombre_tarea = ft.TextField(label="Nombre de la tarea", width=400, border_radius=10, filled=True)
     fecha_entrega = ft.TextField(label="Fecha de entrega (dd/mm/aa)", width=200, border_radius=10, filled=True)
     prioridad = ft.Dropdown(
@@ -173,7 +179,7 @@ def tareas_view(page: ft.Page):
                     bgcolor=ft.colors.WHITE,
                     border_radius=15,
                     shadow=ft.BoxShadow(color=ft.colors.BLACK12, blur_radius=8),
-                    height=600,  # Altura fija para scroll si hay muchas tareas
+                    height=600,
                 )
             ], spacing=20),
             ft.Row([

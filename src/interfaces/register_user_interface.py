@@ -1,12 +1,15 @@
 
-import flet as ft
+"""
+Vista de registro de usuario.
+Incluye formulario de datos personales con validación y redirección al registro académico.
+"""
 
+import flet as ft
 
 def registro_view(page: ft.Page):
     page.title = "Registro de Usuario"
     page.bgcolor = "#f0f4ff"
 
-    # Inputs estilizados
     nombre_input = ft.TextField(label="Nombre completo", width=350, bgcolor="#f9fafb", border_radius=10, border_color="#e0e0e0")
     correo_input = ft.TextField(label="Correo electrónico", width=350, bgcolor="#f9fafb", border_radius=10, border_color="#e0e0e0")
     fecha_nacimiento_input = ft.TextField(label="Fecha de nacimiento (YYYY-MM-DD)", width=350, bgcolor="#f9fafb", border_radius=10, border_color="#e0e0e0")
@@ -32,7 +35,6 @@ def registro_view(page: ft.Page):
             page.update()
             return
 
-        # Redirigir con datos en la URL
         page.go(
             f"/academico?nombre={nombre}&correo={correo}&fecha_nacimiento={fecha_nacimiento}&contraseña={contraseña}"
             f"&universidad={universidad}&carrera={carrera}&semestre={semestre}"
@@ -76,10 +78,3 @@ def registro_view(page: ft.Page):
         vertical_alignment=ft.MainAxisAlignment.CENTER,
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
     )
-
-"""
-Formularios: nombre, correo, fecha nacimiento, contraseña.
-Validación de datos.
-Conectar a usuario_controller.py para registrar.
-Redirigir al registro académico.
-"""
