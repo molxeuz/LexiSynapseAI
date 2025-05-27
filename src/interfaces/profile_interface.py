@@ -1,3 +1,10 @@
+
+"""
+Vista "Perfil de Usuario" en Flet: muestra datos personales y académicos del usuario,
+permite editarlos mediante campos ocultos que se activan con botones, y ofrece secciones vacías para materias y actividades.
+Incluye botones para cerrar sesión y volver al dashboard.
+"""
+
 import flet as ft
 
 def perfil_usuario_view(page: ft.Page):

@@ -12,7 +12,6 @@ from src.interfaces.login_interface import login_view
 from src.interfaces.tareas_interface import tareas_view
 from src.interfaces.calendario_interface import calendario_view
 from src.interfaces.dashboard_interface import dashboard_view
-from src.interfaces.recordatorios_interface import recordatorios_view
 from src.interfaces.ia_interface import ia_view
 from src.interfaces.profile_interface import perfil_usuario_view  # <-- Importa tu vista perfil
 
@@ -40,8 +39,6 @@ def main(page: ft.Page):
             page.views.append(tareas_view(page))
         elif route == "/calendario":
             page.views.append(calendario_view(page))
-        elif route == "/recordatorios":
-            page.views.append(recordatorios_view(page))
         elif route == "/ia_view":
             page.views.append(ia_view(page))
         else:

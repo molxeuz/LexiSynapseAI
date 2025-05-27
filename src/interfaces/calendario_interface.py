@@ -6,32 +6,98 @@ Las tareas se muestran por fecha y pueden agregarse a través de un modal intera
 """
 
 import flet as ft
-import calendar
-from datetime import datetime, timedelta
+from datetime import datetime
+from src.controllers.calendario_controller import CalendarioController
 
 def calendario_view(page: ft.Page):
-    page.title = "Calendario Interactivo"
-    current_date = datetime.now()
-    selected_year = current_date.year
-    selected_month = current_date.month
-    dias_tareas = {}
-    selected_day = None
+    controller = CalendarioController()
 
-    dia_label = ft.Text()
-    tarea_input = ft.TextField(label="Escribe la tarea")
+    page.title = "Calendario Interactivo"
 
     mes_ano_label = ft.Text(size=20, weight="bold")
+    dia_label = ft.Text()
+    tarea_input = ft.TextField(label="Escribe la tarea")
+    contenedor_semanas = ft.Column(spacing=8)
+    dia_detalle = ft.Column(spacing=10)
+
+    def actualizar_dias():
+        contenedor_semanas.controls.clear()
+        nombre_mes, anio = controller.obtener_mes_actual()
+        mes_ano_label.value = f"{nombre_mes} {anio}"
+
+        encabezados = ft.Row(
+            alignment=ft.MainAxisAlignment.CENTER,
+            spacing=6,
+            controls=[ft.Text(dia, weight="bold", width=60, text_align="center")
+                      for dia in ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]]
+        )
+        contenedor_semanas.controls.append(encabezados)
+
+        dias = controller.obtener_dias_del_mes()
+        for semana in range(6):
+            fila = ft.Row(spacing=6, alignment=ft.MainAxisAlignment.CENTER)
+            for i in range(7):
+                fecha = dias[semana * 7 + i]
+                dia_str = fecha.strftime("%Y-%m-%d")
+                es_mes_actual = fecha.month == controller.selected_month
+                tareas = controller.obtener_tareas_dia(dia_str)
+                tareas_texto = f"\n{len(tareas)} tarea{'s' if len(tareas) != 1 else ''}" if tareas else ""
+
+                def crear_handler(dia_local):
+                    return lambda e: abrir_modal(dia_local)
+
+                fila.controls.append(
+                    ft.GestureDetector(
+                        on_tap=crear_handler(dia_str),
+                        content=ft.Container(
+                            content=ft.Column([
+                                ft.Text(str(fecha.day), text_align="center"),
+                                ft.Text(tareas_texto.strip(), size=9, text_align="center")
+                            ]),
+                            bgcolor="#FFFFFF" if es_mes_actual else "#F0F0F0",
+                            border_radius=10,
+                            width=65,
+                            height=60,
+                            padding=6,
+                            alignment=ft.alignment.center,
+                            shadow=ft.BoxShadow(color=ft.colors.BLACK12, blur_radius=4)
+                        )
+                    )
+                )
+            contenedor_semanas.controls.append(fila)
+        page.update()
+
+    def abrir_modal(dia_str):
+        controller.seleccionar_dia(dia_str)
+        dia_label.value = dia_str
+        tarea_input.value = ""
+        mostrar_dia_detalle()
+        dialog.open = True
+        page.update()
+
+    def mostrar_dia_detalle():
+        dia_detalle.controls.clear()
+        selected = controller.obtener_dia_seleccionado()
+        if selected:
+            fecha_dt = datetime.strptime(selected, "%Y-%m-%d")
+            dia_formateado = fecha_dt.strftime("%d de %B de %Y")
+            tareas = controller.obtener_tareas_dia(selected)
+            dia_detalle.controls.append(ft.Text(dia_formateado, size=20, weight="bold"))
+            dia_detalle.controls.append(ft.Divider())
+            if tareas:
+                for tarea in tareas:
+                    dia_detalle.controls.append(ft.Text(f"• {tarea}", size=14))
+            else:
+                dia_detalle.controls.append(ft.Text("No hay tareas para este día.", italic=True, color=ft.colors.GREY))
+        page.update()
 
     def guardar_tarea(e):
-        dia = dia_label.value
         tarea = tarea_input.value.strip()
         if tarea:
-            if dia not in dias_tareas:
-                dias_tareas[dia] = []
-            dias_tareas[dia].append(tarea)
+            controller.agregar_tarea(controller.obtener_dia_seleccionado(), tarea)
         tarea_input.value = ""
         dialog.open = False
-        mostrar_dias_del_mes()
+        actualizar_dias()
         page.update()
 
     dialog = ft.AlertDialog(
@@ -44,123 +110,18 @@ def calendario_view(page: ft.Page):
         ],
         actions_alignment=ft.MainAxisAlignment.END
     )
-
     page.dialog = dialog
-
-    contenedor_semanas = ft.Column(spacing=8)
-
-    def abrir_modal(dia_str):
-        nonlocal selected_day
-        selected_day = dia_str
-        dia_label.value = dia_str
-        tarea_input.value = ""
-        dialog.open = True
-        mostrar_dia_detalle()
-        page.update()
-
-    def mostrar_dias_del_mes():
-        contenedor_semanas.controls.clear()
-
-        mes_ano_label.value = f"{calendar.month_name[selected_month]} {selected_year}"
-
-        encabezados = ft.Row(
-            alignment=ft.MainAxisAlignment.CENTER,
-            spacing=6,
-            controls=[
-                ft.Text(dia, weight="bold", width=60, text_align="center")
-                for dia in ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
-            ]
-        )
-        contenedor_semanas.controls.append(encabezados)
-
-        primer_dia_mes = datetime(selected_year, selected_month, 1)
-        inicio_semana = primer_dia_mes.weekday()
-
-        fecha_inicio = primer_dia_mes - timedelta(days=inicio_semana)
-        dias = [fecha_inicio + timedelta(days=i) for i in range(42)]
-
-        for semana in range(6):
-            fila = ft.Row(spacing=6, alignment=ft.MainAxisAlignment.CENTER)
-            for i in range(7):
-                fecha_actual = dias[semana * 7 + i]
-                es_mes_actual = fecha_actual.month == selected_month
-                dia_str = fecha_actual.strftime("%Y-%m-%d")
-
-                def crear_handler(dia_str_local):
-                    return lambda e: abrir_modal(dia_str_local)
-
-                tareas = dias_tareas.get(dia_str, [])
-                tareas_texto = f"\n{len(tareas)} tarea{'s' if len(tareas) != 1 else ''}" if tareas else ""
-
-                fila.controls.append(
-                    ft.GestureDetector(
-                        on_tap=crear_handler(dia_str),
-                        content=ft.Container(
-                            content=ft.Column(
-                                controls=[
-                                    ft.Text(str(fecha_actual.day), text_align="center"),
-                                    ft.Text(tareas_texto.strip(), size=9, text_align="center")
-                                ],
-                                spacing=2,
-                                alignment=ft.MainAxisAlignment.CENTER,
-                                horizontal_alignment=ft.CrossAxisAlignment.CENTER
-                            ),
-                            bgcolor="#FFFFFF" if es_mes_actual else "#F0F0F0",
-                            border_radius=10,
-                            width=65,
-                            height=60,
-                            padding=6,
-                            alignment=ft.alignment.center,
-                            shadow=ft.BoxShadow(color=ft.colors.BLACK12, blur_radius=4, offset=ft.Offset(1, 1))
-                        )
-                    )
-                )
-            contenedor_semanas.controls.append(fila)
-        page.update()
-
-    def mostrar_dia_detalle():
-        dia_detalle.controls.clear()
-        if selected_day:
-            fecha_dt = datetime.strptime(selected_day, "%Y-%m-%d")
-            dia_formateado = fecha_dt.strftime("%d de %B de %Y")
-            tareas = dias_tareas.get(selected_day, [])
-            dia_detalle.controls.append(ft.Text(dia_formateado, size=20, weight="bold"))
-            dia_detalle.controls.append(ft.Divider())
-            if tareas:
-                for tarea in tareas:
-                    dia_detalle.controls.append(ft.Text(f"• {tarea}", size=14))
-            else:
-                dia_detalle.controls.append(ft.Text("No hay tareas para este día.", italic=True, color=ft.colors.GREY))
-        page.update()
-
-    def siguiente_mes(e):
-        nonlocal selected_month, selected_year
-        selected_month += 1
-        if selected_month > 12:
-            selected_month = 1
-            selected_year += 1
-        mostrar_dias_del_mes()
-
-    def mes_anterior(e):
-        nonlocal selected_month, selected_year
-        selected_month -= 1
-        if selected_month < 1:
-            selected_month = 12
-            selected_year -= 1
-        mostrar_dias_del_mes()
 
     controles_nav = ft.Row(
         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
         controls=[
-            ft.IconButton(icon=ft.icons.ARROW_BACK, on_click=mes_anterior),
+            ft.IconButton(icon=ft.icons.ARROW_BACK, on_click=lambda e: [controller.cambiar_mes(False), actualizar_dias()]),
             mes_ano_label,
-            ft.IconButton(icon=ft.icons.ARROW_FORWARD, on_click=siguiente_mes)
+            ft.IconButton(icon=ft.icons.ARROW_FORWARD, on_click=lambda e: [controller.cambiar_mes(True), actualizar_dias()])
         ]
     )
 
-    dia_detalle = ft.Column(spacing=10)
-
-    mostrar_dias_del_mes()
+    actualizar_dias()
 
     return ft.View(
         route="/calendario",
@@ -174,7 +135,7 @@ def calendario_view(page: ft.Page):
                         controles_nav,
                         ft.Divider(thickness=2, color=ft.colors.BLUE_GREY_200),
                         contenedor_semanas
-                    ], spacing=15),
+                    ]),
                     col={"sm": 12, "md": 8},
                     padding=20,
                     bgcolor=ft.colors.WHITE,

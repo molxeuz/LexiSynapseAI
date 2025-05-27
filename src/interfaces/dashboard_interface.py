@@ -1,11 +1,16 @@
+
+"""
+Vista del dashboard principal.
+Muestra un resumen de tareas próximas y accesos rápidos a otras funcionalidades como tareas, calendario e IA.
+Requiere que el usuario haya iniciado sesión (usuario_id en client_storage).
+"""
+
 import flet as ft
 from src.controllers.tarea_controller import TareaController
 
 def dashboard_view(page: ft.Page):
-    # Quitar validación de sesión
     usuario_id = page.client_storage.get("usuario_id")
 
-    # Si no hay usuario logeado, usar un valor por defecto para evitar errores
     tarea_controller = TareaController(usuario_id) if usuario_id else None
     page.title = "LexiSynapseAI"
 
@@ -89,7 +94,6 @@ def dashboard_view(page: ft.Page):
                     controls=[
                         create_action_button(ft.icons.ADD_CIRCLE_OUTLINE, "Añadir Tarea", lambda _: page.go("/tareas")),
                         create_action_button(ft.icons.CALENDAR_MONTH, "Calendario", lambda _: page.go("/calendario")),
-                        create_action_button(ft.icons.NOTIFICATIONS, "Recordatorios", lambda _: page.go("/recordatorios")),
                         create_action_button(ft.icons.ANDROID, "IA", lambda _: page.go("/ia_view")),
                     ],
                     alignment=ft.MainAxisAlignment.SPACE_EVENLY
