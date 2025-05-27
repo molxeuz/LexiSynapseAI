@@ -3,7 +3,6 @@ import flet as ft
 def perfil_usuario_view(page: ft.Page):
     page.title = "Perfil de Usuario"
 
-    # Redirección al cerrar sesión o volver
     def cerrar_sesion(e):
         page.client_storage.clear()
         page.go("/login")
@@ -11,22 +10,27 @@ def perfil_usuario_view(page: ft.Page):
     def volver_dashboard(e):
         page.go("/dashboard")
 
-    # Acciones de edición
-    def editar_datos_personales(e):
-        nombre.visible = True
-        correo.visible = True
-        fecha_nacimiento.visible = True
-        btn_guardar.visible = True
+    # Estado de edición
+    estado_edicion_personal = {"activo": False}
+    estado_edicion_academico = {"activo": False}
+
+    def toggle_editar_personal(e):
+        estado_edicion_personal["activo"] = not estado_edicion_personal["activo"]
+        nombre.visible = estado_edicion_personal["activo"]
+        correo.visible = estado_edicion_personal["activo"]
+        fecha_nacimiento.visible = estado_edicion_personal["activo"]
+        btn_guardar_personal.visible = estado_edicion_personal["activo"]
         page.update()
 
-    def editar_datos_academicos(e):
-        universidad.visible = True
-        carrera.visible = True
-        semestre.visible = True
-        btn_guardar.visible = True
+    def toggle_editar_academico(e):
+        estado_edicion_academico["activo"] = not estado_edicion_academico["activo"]
+        universidad.visible = estado_edicion_academico["activo"]
+        carrera.visible = estado_edicion_academico["activo"]
+        semestre.visible = estado_edicion_academico["activo"]
+        btn_guardar_academico.visible = estado_edicion_academico["activo"]
         page.update()
 
-    # Campos de edición (inicialmente ocultos)
+    # Campos de edición
     nombre = ft.TextField(label="Nombre completo", width=400, filled=True, border_radius=10, visible=False)
     correo = ft.TextField(label="Correo electrónico", width=400, filled=True, border_radius=10, visible=False)
     fecha_nacimiento = ft.TextField(label="Fecha de nacimiento", width=200, filled=True, border_radius=10, visible=False)
@@ -34,7 +38,7 @@ def perfil_usuario_view(page: ft.Page):
     carrera = ft.TextField(label="Carrera", width=300, filled=True, border_radius=10, visible=False)
     semestre = ft.TextField(label="Semestre", width=100, filled=True, border_radius=10, visible=False)
 
-    # Visualización de datos (vacíos por defecto)
+    # Visualización
     nombre_text = ft.Text("", size=16, weight="bold")
     correo_text = ft.Text("", size=16)
     fecha_text = ft.Text("", size=16)
@@ -42,10 +46,12 @@ def perfil_usuario_view(page: ft.Page):
     carrera_text = ft.Text("", size=16)
     semestre_text = ft.Text("", size=16)
 
-    # Botones
-    btn_editar_personal = ft.OutlinedButton("Editar Datos Personales", icon=ft.icons.EDIT, on_click=editar_datos_personales)
-    btn_editar_academico = ft.OutlinedButton("Editar Datos Académicos", icon=ft.icons.EDIT, on_click=editar_datos_academicos)
-    btn_guardar = ft.ElevatedButton("Guardar Cambios", icon=ft.icons.SAVE, visible=False)
+    # Botones individuales por sección
+    btn_editar_personal = ft.OutlinedButton("Editar Datos Personales", icon=ft.icons.EDIT, on_click=toggle_editar_personal)
+    btn_guardar_personal = ft.ElevatedButton("Guardar Cambios", icon=ft.icons.SAVE, visible=False)
+
+    btn_editar_academico = ft.OutlinedButton("Editar Datos Académicos", icon=ft.icons.EDIT, on_click=toggle_editar_academico)
+    btn_guardar_academico = ft.ElevatedButton("Guardar Cambios", icon=ft.icons.SAVE, visible=False)
 
     # Datos personales
     datos_personales = ft.Container(
@@ -55,7 +61,7 @@ def perfil_usuario_view(page: ft.Page):
             ft.Row([ft.Text("Nombre:", width=150), nombre_text, nombre], spacing=10),
             ft.Row([ft.Text("Correo:", width=150), correo_text, correo], spacing=10),
             ft.Row([ft.Text("Fecha de nacimiento:", width=150), fecha_text, fecha_nacimiento], spacing=10),
-            ft.Row([btn_editar_personal])
+            ft.Row([btn_editar_personal, btn_guardar_personal], spacing=10)
         ], spacing=10),
         padding=20,
         bgcolor=ft.colors.WHITE,
@@ -71,7 +77,7 @@ def perfil_usuario_view(page: ft.Page):
             ft.Row([ft.Text("Universidad:", width=150), universidad_text, universidad], spacing=10),
             ft.Row([ft.Text("Carrera:", width=150), carrera_text, carrera], spacing=10),
             ft.Row([ft.Text("Semestre:", width=150), semestre_text, semestre], spacing=10),
-            ft.Row([btn_editar_academico])
+            ft.Row([btn_editar_academico, btn_guardar_academico], spacing=10)
         ], spacing=10),
         padding=20,
         bgcolor=ft.colors.WHITE,
@@ -79,7 +85,7 @@ def perfil_usuario_view(page: ft.Page):
         shadow=ft.BoxShadow(color=ft.colors.BLACK12, blur_radius=8),
     )
 
-    # Materias inscritas
+    # Materias
     materias_academicas = ft.Container(
         content=ft.Column([
             ft.Text("Materias Inscritas", size=20, weight="bold", color=ft.colors.BLUE_900),
@@ -92,7 +98,7 @@ def perfil_usuario_view(page: ft.Page):
         shadow=ft.BoxShadow(color=ft.colors.BLACK12, blur_radius=8),
     )
 
-    # Actividades extracurriculares
+    # Actividades
     actividades_extra = ft.Container(
         content=ft.Column([
             ft.Text("Actividades Extracurriculares", size=20, weight="bold", color=ft.colors.BLUE_900),
@@ -105,22 +111,43 @@ def perfil_usuario_view(page: ft.Page):
         shadow=ft.BoxShadow(color=ft.colors.BLACK12, blur_radius=8),
     )
 
-    # Botones de acción
-    botones_accion = ft.Row([btn_guardar], spacing=10)
+    # Footer con botones grandes y bonitos
+    footer = ft.Row([
+        ft.Container(
+            content=ft.FilledButton(
+                text="Volver al Dashboard",
+                icon=ft.icons.ARROW_BACK,
+                on_click=volver_dashboard,
+                style=ft.ButtonStyle(
+                    padding=20,
+                    bgcolor=ft.colors.BLUE_700,
+                    color=ft.colors.WHITE,
+                    shape=ft.RoundedRectangleBorder(radius=12),
+                    elevation=4
+                )
+            ),
+            expand=1,
+            alignment=ft.alignment.center_left
+        ),
+        ft.Container(
+            content=ft.FilledButton(
+                text="Cerrar Sesión",
+                icon=ft.icons.LOGOUT,
+                on_click=cerrar_sesion,
+                style=ft.ButtonStyle(
+                    padding=20,
+                    bgcolor=ft.colors.RED_600,
+                    color=ft.colors.WHITE,
+                    shape=ft.RoundedRectangleBorder(radius=12),
+                    elevation=4
+                )
+            ),
+            expand=1,
+            alignment=ft.alignment.center_right
+        )
+    ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN, spacing=30)
 
-    # Opciones extra
-    opciones_extra = ft.Column([
-        ft.Text("Opciones", size=20, weight="bold"),
-        ft.Divider(),
-        ft.TextButton("Cerrar sesión", on_click=cerrar_sesion)
-    ], spacing=10)
-
-    # Botón de volver
-    volver = ft.Row([
-        ft.IconButton(icon=ft.icons.ARROW_BACK, tooltip="Volver al Dashboard", on_click=volver_dashboard),
-        ft.TextButton("Volver al Dashboard", on_click=volver_dashboard)
-    ], alignment=ft.MainAxisAlignment.START, spacing=5)
-
+    # Vista principal
     return ft.View(
         route="/perfil",
         bgcolor=ft.colors.GREY_100,
@@ -131,12 +158,10 @@ def perfil_usuario_view(page: ft.Page):
                 ft.Column([datos_personales], col={"sm": 12, "md": 6}),
                 ft.Column([datos_academicos], col={"sm": 12, "md": 6}),
             ], spacing=20),
-            botones_accion,
             ft.ResponsiveRow([
                 ft.Column([materias_academicas], col={"sm": 12, "md": 6}),
                 ft.Column([actividades_extra], col={"sm": 12, "md": 6}),
             ], spacing=20),
-            opciones_extra,
-            volver
+            footer
         ]
     )

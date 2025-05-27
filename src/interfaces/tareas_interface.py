@@ -17,17 +17,12 @@ PRIORIDAD_COLOR = {
 }
 
 def tareas_view(page: ft.Page):
+    # Quitar validación de sesión
     usuario_id = page.client_storage.get("usuario_id")
-    if not usuario_id:
-        return ft.View(
-            route="/tareas",
-            controls=[
-                ft.Text("Error: No has iniciado sesión. Redirigiendo al login...", color="red"),
-                ft.ElevatedButton("Ir a Login", on_click=lambda _: page.go("/login"))
-            ],
-            vertical_alignment=ft.MainAxisAlignment.CENTER,
-            horizontal_alignment=ft.MainAxisAlignment.CENTER,
-        )
+
+    # Si no hay usuario logeado, usar un valor por defecto para evitar errores
+    tarea_controller = TareaController(usuario_id) if usuario_id else None
+    page.title = "LexiSynapseAI"
 
     controller = TareaController(usuario_id)
     page.title = "Gestión de Tareas"
