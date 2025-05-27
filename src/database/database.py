@@ -1,10 +1,15 @@
-# database/database.py
+
+"""
+Configuración y conexión a la base de datos SQLite para la aplicación.
+Define y crea las tablas necesarias si no existen: usuarios, tareas, materias y actividades académicas.
+Proporciona el objeto de conexión (conn) y cursor para operaciones CRUD.
+"""
+
 import sqlite3
 
 conn = sqlite3.connect("app_database.db", check_same_thread=False)
 cursor = conn.cursor()
 
-# Crear tablas si no existen
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS usuarios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

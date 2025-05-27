@@ -1,3 +1,9 @@
+
+"""
+Archivo principal que configura la navegación y vistas del sistema de registro.
+Gestiona rutas y muestra las interfaces correspondientes según la URL.
+"""
+
 import flet as ft
 
 from src.interfaces.register_user_interface import registro_view
@@ -8,7 +14,7 @@ from src.interfaces.calendario_interface import calendario_view
 from src.interfaces.dashboard_interface import dashboard_view
 from src.interfaces.recordatorios_interface import recordatorios_view
 from src.interfaces.ia_interface import ia_view
-
+from src.interfaces.profile_interface import perfil_usuario_view  # <-- Importa tu vista perfil
 
 def main(page: ft.Page):
     page.title = "Sistema de Registro"
@@ -28,6 +34,8 @@ def main(page: ft.Page):
             page.views.append(login_view(page))
         elif route == "/dashboard":
             page.views.append(dashboard_view(page))
+        elif route == "/perfil":
+            page.views.append(perfil_usuario_view(page))
         elif route == "/tareas":
             page.views.append(tareas_view(page))
         elif route == "/calendario":
@@ -44,4 +52,3 @@ def main(page: ft.Page):
     page.go("/login")
 
 ft.app(target=main, view=ft.WEB_BROWSER)
-

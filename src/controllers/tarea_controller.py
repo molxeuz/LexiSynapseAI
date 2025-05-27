@@ -1,3 +1,9 @@
+
+"""
+Define la clase Tarea para representar tareas individuales y su estado.
+La clase TareaController maneja operaciones CRUD para las tareas del usuario en la base de datos.
+"""
+
 from src.database.database import cursor, conn
 
 class Tarea:

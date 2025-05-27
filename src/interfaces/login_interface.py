@@ -1,6 +1,12 @@
+
+"""
+Interfaz de usuario para la vista de login.
+Define formulario con campos de correo y contraseña, manejo de autenticación,
+y navegación a registro o dashboard según resultado.
+"""
+
 import flet as ft
 from src.controllers.usuario_controller import Usuario
-
 
 def login_view(page: ft.Page):
     page.title = "Bienvenido de nuevo"
@@ -31,14 +37,13 @@ def login_view(page: ft.Page):
         resultado, success = Usuario.iniciar_sesion(correo_input.value, contraseña_input.value)
 
         if success:
-            # Guardar el ID de usuario en el almacenamiento del cliente
             page.client_storage.set("usuario_id", resultado["id"])
 
             resultado_text.value = "Inicio de sesión exitoso"
             resultado_text.color = "#00c853"
             page.go("/dashboard")
         else:
-            resultado_text.value = resultado  # mensaje de error
+            resultado_text.value = resultado
             resultado_text.color = "#d50000"
 
         page.update()
